@@ -11,6 +11,6 @@ route::prefix('v1')->group(function () {
     route::get('room', function(){
         return 'room one';
     }) ;
+    
+    require __DIR__ . '/auth.php';
 });
-
-require __DIR__ . '/auth.php';
