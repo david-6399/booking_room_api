@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
         if ($request->filled('admin_code') && $request->admin_code === 'admin123') {
             $user->assignRole('admin');
         } else {    
-            $user->assigneRole('geust');
+            $user->assignRole('guest');
         }
 
         event(new Registered($user));
