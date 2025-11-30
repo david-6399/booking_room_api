@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -24,6 +25,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'admin_code' => ['nullable', 'string'],
         ]);
 
         $user = User::create([
@@ -31,6 +33,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->string('password')),
         ]);
+
+        if ($request->filled('admin_code') && $request->admin_code === 'admin123') {
+            $user->assignRole('admin');
+        } else {    
+            $user->assigneRole('geust');
+        }
 
         event(new Registered($user));
 
