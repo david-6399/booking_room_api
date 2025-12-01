@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\filterRoom;
 use App\Http\Controllers\Controller;
 use App\Models\room;
 use App\Http\Requests\StoreroomRequest;
 use App\Http\Requests\UpdateroomRequest;
 use App\Http\Resources\roomResource;
+use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function __construct(protected filterRoom $filterRoom)
     {
-        return roomResource::collection(room::all());
+        
+    }
+
+    public function index(Request $request)
+    {
+        $filter = $request->only(['status','room_type','capacity']);
+
+        $rooms = $this->filterRoom->filterRooms($filter)->paginate(2);  
+
+
+        return roomResource::collection($rooms);
     }
 
     /**
