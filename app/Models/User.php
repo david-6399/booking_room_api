@@ -47,4 +47,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function bookings()
+    {
+        return $this->belongsToMany(room::class,'bookings', 'user_id', 'id_room')
+                ->withPivot('check_in_date', 'check_out_date', 'status', 'payment_status', 'total_amount')  ;
+    }
 }

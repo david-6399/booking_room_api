@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\BookingController;
 use App\Http\Controllers\v1\RoomController;
 use App\Http\Controllers\v1\RoomTypeController;
 use App\Http\Controllers\v1\userController;
@@ -21,11 +22,12 @@ route::prefix('v1')->group(function () {
             route::apiResource('user', userController::class);
             route::apiResource('room-type', RoomTypeController::class);
             route::apiResource('room', RoomController::class);
+            route::apiResource('booking', BookingController::class);
         });
         
         // Guest Route
         route::middleware('role:guest')->group(function () {
-    
+           
         });
         
         
