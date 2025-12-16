@@ -22,7 +22,7 @@ class printAllReservations
         
         $roleName = auth()->user()->getRoleNames()->first();
         
-        if($roleName == "admin"){
+        if($roleName === "admin"){
             $allBookings = $this->filter->fillterBookings($request);
             return bookingResource::collection($allBookings);
 
@@ -31,6 +31,12 @@ class printAllReservations
             $userId = auth()->user()->id;
 
             $request->merge(['user_id' => $userId]);    
+            //add mesage if there is no booking for user
+            if(booking::where('user_id', $userId)->count() === 0){
+                return response()->json([
+                    'message' => 'No bookings found .'
+                ], 404);
+            }
             $userBookings = $this->filter->fillterBookings($request);
 
             return bookingResource::collection($userBookings);
