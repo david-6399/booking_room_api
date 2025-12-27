@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Models\booking;
-use App\Models\room;
+use App\Models\Booking;
+use App\Models\Room ;
 
 class filter
 {
@@ -17,7 +17,7 @@ class filter
 
     public function filter($request)
     {
-        $query = room::query();
+        $query = Room::query();
 
         if ($request->status) {
             $query->where('status', $request->status);
@@ -36,7 +36,7 @@ class filter
 
     public function fillterBookings($request)
     {
-        $query = booking::query();
+        $query = Booking::query();
 
         if ($request->status) {
             $query->where('status', $request->status);

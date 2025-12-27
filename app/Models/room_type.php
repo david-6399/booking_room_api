@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\hostelOwnerScope;
 use Database\Factories\roomTypeFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,20 +10,27 @@ use Illuminate\Database\Eloquent\Model;
 
 #[UseFactory(roomTypeFactory::class)]
 
-class room_type extends Model
+class Room_type extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'price_per_night',
-        'description',
-    ];
+
+    protected $guarded = ['id','hostel_id'];
 
     protected $table = 'room_types';
 
     public function rooms()
     {
         return $this->hasMany(room::class, 'room_type_id', 'id');
+    }
+
+    public function hostel()
+    {
+        return $this->belongsTo(hostel::class, 'hostel_id', 'id');
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new hostelOwnerScope);
     }
 }

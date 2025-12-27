@@ -53,8 +53,11 @@ class CreateNewBooking
             }
         
             $room_price_per_night = room::find($request->room_id)->roomType->price_per_night;
+            
             $bookingData = $request->validated();
+            
             $bookingData['status'] = 'pending';
+            $bookingData['hostel_id'] =  room::find($request->room_id)->hostel->id;
             $bookingData['payment_status'] = 'pending';
             $bookingData['total_amount'] = $room_price_per_night * ((strtotime($request->check_out_date) - strtotime($request->check_in_date)) / (60 * 60 * 24));
 

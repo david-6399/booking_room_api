@@ -18,6 +18,7 @@ class roomResource extends JsonResource
             'room_number' => $this->room_number,
             'capacity' => $this->capacity,
             'status' => $this->status,
+            'hostel' => new hostelResource($this->hostel),
             'room_type' => new roomTypeResource($this->roomType),
         ];
     }

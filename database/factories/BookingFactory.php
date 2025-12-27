@@ -37,6 +37,7 @@ class BookingFactory extends Factory
             'status' => $this->faker->randomElement(['pending',  'confirmed', 'checked_in', 'checked_out', 'canceled']),
             'payment_status' => $this->faker->randomElement(['pending', 'completed', 'failed']),
             'total_amount' => $this->faker->randomFloat(2, 50, 500),
+            'hostel_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

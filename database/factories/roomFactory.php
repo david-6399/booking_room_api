@@ -21,6 +21,7 @@ class roomFactory extends Factory
             'room_type_id' => \App\Models\room_type::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['available', 'occupied', 'maintenance']),
             'capacity' => $this->faker->numberBetween(1, 4),
+            'hostel_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

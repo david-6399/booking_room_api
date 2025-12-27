@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Http\Resources\bookingResource;
-use App\Models\booking;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 
 class printAllReservations
@@ -22,7 +22,7 @@ class printAllReservations
         
         $roleName = auth()->user()->getRoleNames()->first();
         
-        if($roleName === "admin"){
+        if($roleName === "admin" || $roleName === "super_admin"){
             $allBookings = $this->filter->fillterBookings($request);
             return bookingResource::collection($allBookings);
 
@@ -32,7 +32,7 @@ class printAllReservations
 
             $request->merge(['user_id' => $userId]);    
             //add mesage if there is no booking for user
-            if(booking::where('user_id', $userId)->count() === 0){
+            if(Booking::where('user_id', $userId)->count() === 0){
                 return response()->json([
                     'message' => 'No bookings found .'
                 ], 404);

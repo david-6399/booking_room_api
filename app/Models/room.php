@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\hostelOwnerScope;
 use App\roomStatus;
 use Database\Factories\roomFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
@@ -10,16 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 
 
 #[UseFactory(roomFactory::class)]
-class room extends Model
+class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'room_number',
-        'capacity',
-        'room_type_id',
-        'status',
-    ];
+
+    protected $guarded = ['id','hostel_id'];
 
     protected function casts(): array
     {
@@ -30,7 +27,7 @@ class room extends Model
 
     public function roomType()
     {
-        return $this->belongsTo(room_type::class, 'room_type_id', 'id');
+        return $this->belongsTo(Room_type::class, 'room_type_id', 'id');
     }
 
     public function bookings()
@@ -38,4 +35,17 @@ class room extends Model
         return $this->belongsToMany(User::class, 'bookings', 'room_id', 'user_id')
                 ->withPivot('check_in_date', 'check_out_date', 'status', 'payment_status', 'total_amount');
     }   
+
+    public function hostel()
+    {
+        return $this->belongsTo(Hostel::class, 'hostel_id', 'id');
+    }
+
+    
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new hostelOwnerScope);
+    }
+
+    
 }

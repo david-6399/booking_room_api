@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('room_number')->unique();
             $table->integer('capacity');
-            $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
             $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
             $table->timestamps();
+            
+            $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
+            $table->foreignId('hostel_id')->constrained()->onDelete('cascade');
         });
     }
 

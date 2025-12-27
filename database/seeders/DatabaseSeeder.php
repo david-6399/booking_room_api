@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\booking;
+use App\Models\hostel;
 use App\Models\room;
 use App\Models\room_type;
 use App\Models\User;
@@ -18,11 +19,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
+        Hostel::factory(10)->create();
         $this->call(roleAndPermissionSeeder::class);
-        room_type::factory(4)->create();
+        Room_type::factory(4)->create();
         booking::factory(20)->create();
-        room::factory(50)->create();
+        Room::factory(50)->create();
+
     }
 }

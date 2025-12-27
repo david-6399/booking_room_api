@@ -24,6 +24,7 @@ class StorebookingRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'room_id' => 'required|exists:rooms,id',
+            'hostel_id' => 'required|exists:hostels,id',
             'check_in_date' => 'required|date',  // add |after_or_equal:today   
             'check_out_date' => 'required|date|after:check_in_date',
         ];

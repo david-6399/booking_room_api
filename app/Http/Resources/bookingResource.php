@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Booking;
+use App\Models\Hostel;
 use App\Models\room;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,8 +20,8 @@ class bookingResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => new userResource(User::find($this->user_id)),
-            'room' => new roomResource(room::find($this->room_id)),
+            'user' => new userResource($this->user),
+            'room' => new roomResource($this->room),
             'check_in_date' => $this->check_in_date,
             'check_out_date' => $this->check_out_date,
             'status' => $this->status,

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\v1;
 
 use App\filter;
 use App\Http\Controllers\Controller;
-use App\Models\room;
+
 use App\Http\Requests\StoreroomRequest;
 use App\Http\Requests\UpdateroomRequest;
+use App\Http\Resources\hostelResource;
 use App\Http\Resources\roomResource;
+use App\Models\Room;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -26,7 +28,7 @@ class RoomController extends Controller
 
         $rooms = $this->filter->filter($request)->paginate(10);      
 
-
+        
         return roomResource::collection($rooms);
     }
 
@@ -44,14 +46,16 @@ class RoomController extends Controller
     public function store(StoreroomRequest $request)
     {
         $data = $request->validated();
-        $room = room::create($data);
+        $data['hostel_id'] = auth()->user()->hostel->id;
+        
+        $room = Room::create($data);
         return new roomResource($room);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(room $room)
+    public function show(Room $room)
     {
         return new roomResource($room);
     }
@@ -59,7 +63,7 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(room $room)
+    public function edit(Room $room)
     {
         //
     }

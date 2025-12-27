@@ -5,12 +5,13 @@ namespace App\Http\Controllers\v1;
 use App\bookingStatus;
 use App\CreateNewBooking;
 use App\Http\Controllers\Controller;
-use App\Models\booking;
+
 use App\Http\Requests\StorebookingRequest;
 use App\Http\Requests\UpdatebookingRequest;
 use App\Http\Resources\bookingResource;
 use App\Jobs\changeRoomStatusToAvailableJob;
-use App\Models\room;
+use App\Models\Booking;
+use App\Models\Room;
 use App\paymentStatus;
 use App\printAllReservations;
 use App\roomStatus;
@@ -48,7 +49,7 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(booking $booking)
+    public function show(Booking $booking)
     {
         //
     }
@@ -56,7 +57,7 @@ class BookingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatebookingRequest $request, booking $booking)
+    public function update(UpdatebookingRequest $request, Booking $booking)
     {
         //
     }
@@ -64,12 +65,12 @@ class BookingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(booking $booking)
+    public function destroy(Booking $booking)
     {
         //
     }
 
-    public function confirm(booking $id)
+    public function confirm(Booking $id)
     {
         if($id->status === bookingStatus::CONFIRMED->value){  
             return response()->json([
@@ -95,7 +96,7 @@ class BookingController extends Controller
                 'payment_status' => paymentStatus::COMPLETED->value
             ]);
 
-            $room = room::find($id->room_id);
+            $room = Room::find($id->room_id);
             $room->update([
                 'status' => roomStatus::AVAILABLE->value
             ]);
@@ -107,7 +108,7 @@ class BookingController extends Controller
         ], 200);
     }
 
-    public function checkIn(booking $id)
+    public function checkIn(Booking $id)
     {
         if($id->check_out_date <= now())
         {    
@@ -125,7 +126,7 @@ class BookingController extends Controller
                 'status' => bookingStatus::CHECKED_IN->value,
             ]);
 
-            $room = room::find($id->room_id);
+            $room = Room::find($id->room_id);
             $room->update([
                 'status' => roomStatus::OCCUPIED->value
             ]);
@@ -136,7 +137,7 @@ class BookingController extends Controller
         ], 200);
     }
 
-    public function checkOut(booking $id)
+    public function checkOut(Booking $id)
     {
         if($id->status !== bookingStatus::CHECKED_IN->value){  
             $id->update([
@@ -162,7 +163,7 @@ class BookingController extends Controller
                     'status' => bookingStatus::CHECKED_OUT->value,
                 ]);
     
-                $room = room::find($id->room_id);
+                $room = Room::find($id->room_id);
                 $room->update([
                     'status' => roomStatus::MAINTENANCE->value  // after certain period of time change to available 
                 ]);

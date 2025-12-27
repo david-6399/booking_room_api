@@ -13,7 +13,8 @@ class roleAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        role::create(['name'=>'admin']);
+        Role::create(['name'=>'admin']);
         Role::create(['name'=>'guest']);
+        Role::create(['name'=>'super_admin']);
     }
 }

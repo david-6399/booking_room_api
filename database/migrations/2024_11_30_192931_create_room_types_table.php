@@ -17,6 +17,8 @@ return new class extends Migration
             $table->decimal('price_per_night', 8, 2);
             $table->text('description')->nullable();
             $table->timestamps();
+
+            $table->foreignId('hostel_id')->constrained('hostels')->onDelete('cascade');
         });
     }
 

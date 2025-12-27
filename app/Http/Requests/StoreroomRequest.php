@@ -25,7 +25,7 @@ class StoreroomRequest extends FormRequest
             'room_number' => 'required|unique:rooms,room_number|max:10',
             'room_type_id' => 'required|exists:room_types,id',
             'status' => 'required|in:available,occupied,maintenance',
-            'capacity' => 'required|integer|min:1',
+            'capacity' => 'required|integer|min:1'
         ];
     }
 

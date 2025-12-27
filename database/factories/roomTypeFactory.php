@@ -20,6 +20,7 @@ class roomTypeFactory extends Factory
             'name' => $this->faker->unique()->randomElement(['Single', 'Double', 'Suite', 'Deluxe']),
             'description' => $this->faker->sentence(),
             'price_per_night' => $this->faker->randomFloat(2, 50, 300),
+            'hostel_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
