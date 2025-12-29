@@ -6,6 +6,7 @@ use App\Models\hostel;
 use App\Http\Requests\StorehostelRequest;
 use App\Http\Requests\UpdatehostelRequest;
 use App\Http\Resources\hostelResource;
+use Illuminate\Http\Request;
 
 class HostelController extends Controller
 {
@@ -22,10 +23,16 @@ class HostelController extends Controller
      */
     public function store(StorehostelRequest $request)
     {
-
+        hostel::find(1)->clearMediaCollection('hostelImages');
+        dd('done');
         $data = $request->validated();
-        
         $hostel = hostel::create($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $hostel->addMedia($image)->toMediaCollection('hostelImages');
+            }
+        } 
 
         return response()->json([
             'message'=>'Hostel created successfully', 

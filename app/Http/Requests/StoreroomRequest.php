@@ -25,7 +25,9 @@ class StoreroomRequest extends FormRequest
             'room_number' => 'required|unique:rooms,room_number|max:10',
             'room_type_id' => 'required|exists:room_types,id',
             'status' => 'required|in:available,occupied,maintenance',
-            'capacity' => 'required|integer|min:1'
+            'capacity' => 'required|integer|min:1',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ];
     }
 
@@ -42,6 +44,10 @@ class StoreroomRequest extends FormRequest
             'capacity.required' => 'Capacity is required.',
             'capacity.integer' => 'Capacity must be an integer.',
             'capacity.min' => 'Capacity must be at least 1.',
+            'images.array' => 'Images must be an array.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Images must be of type: jpeg, png, jpg, gif, svg.',
+            'images.*.max' => 'Each image must not exceed 20MB.',
         ];
     }
 }

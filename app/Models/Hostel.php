@@ -7,10 +7,12 @@ use App\hostelStatus;
 use App\Models\Scopes\hostelOwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Hostel extends Model
+class Hostel extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     
 
@@ -41,8 +43,15 @@ class Hostel extends Model
     }
     
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('hostelImages');
+    }
+
+
     protected static function booted(): void
     {
         static::addGlobalScope(new hostelOwnerScope);
     }
+
 }

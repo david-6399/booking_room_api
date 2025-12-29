@@ -8,12 +8,13 @@ use Database\Factories\roomFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 #[UseFactory(roomFactory::class)]
-class Room extends Model
+class Room extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
 
     protected $guarded = ['id','hostel_id'];
@@ -41,6 +42,12 @@ class Room extends Model
         return $this->belongsTo(Hostel::class, 'hostel_id', 'id');
     }
 
+
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('roomImages');
+    }
     
     protected static function booted(): void
     {

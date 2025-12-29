@@ -49,6 +49,13 @@ class RoomController extends Controller
         $data['hostel_id'] = auth()->user()->hostel->id;
         
         $room = Room::create($data);
+
+        if($request->hasFile('images')){
+            foreach($request->file('images') as $image){
+                $room->addMedia($image)->toMediaCollection('roomImages');
+            }
+        }
+        
         return new roomResource($room);
     }
 

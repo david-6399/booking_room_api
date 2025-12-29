@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorehostelRequest extends FormRequest
+    class StorehostelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,6 +30,8 @@ class StorehostelRequest extends FormRequest
             'phone' => ['required','string','max:20','regex:/^(\+213|0)(5|6|7)[0-9]{8}$/'],
             'email' => 'required|email|max:255',
             'created_by' => 'required|exists:users,id',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ];
     }
 }
