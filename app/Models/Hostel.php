@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\FiltersByRole;
-use App\hostelStatus;
+use App\Enums\hostelStatus;
 use App\Models\Scopes\hostelOwnerScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

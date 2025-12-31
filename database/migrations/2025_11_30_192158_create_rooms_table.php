@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamps();
             
             $table->foreignId('room_type_id')->constrained('room_types')->onDelete('cascade');
-            $table->foreignId('hostel_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hostel_id')->constrained(    )->onDelete('cascade');
         });
     }
 

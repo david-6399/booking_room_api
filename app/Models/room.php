@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\hostelOwnerScope;
-use App\roomStatus;
+use App\Enums\roomStatus;
 use Database\Factories\roomFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

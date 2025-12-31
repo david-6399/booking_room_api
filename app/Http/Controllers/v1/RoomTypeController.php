@@ -32,7 +32,10 @@ class RoomTypeController extends Controller
         $validatedData = $request->validated();
         $validatedData['hostel_id'] = auth()->user()->hostel->id;
         $roomType = Room_type::create($validatedData);
-        return new roomTypeResource($roomType);
+        return response()->json([
+            'message' => 'Room Type created successfully',
+            'data' => new roomTypeResource($roomType)
+        ], 201);
     }
 
     /**
@@ -40,7 +43,9 @@ class RoomTypeController extends Controller
      */
     public function show(Room_type $room_type)
     {
-        return new roomTypeResource($room_type);
+        return response()->json([
+            'data' => new roomTypeResource($room_type)
+        ]);
     }
 
     /**
@@ -55,7 +60,10 @@ class RoomTypeController extends Controller
     {
         $data = $request->validated();
         $room_type->update($data);
-        return new roomTypeResource($room_type);
+        return response()->json([
+            'message' => 'Room Type updated successfully',
+            'data' => new roomTypeResource($room_type)
+        ]);
     }
 
     /**

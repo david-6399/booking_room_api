@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\roomStatus;
 use App\Http\Resources\bookingResource;
 use App\Models\booking;
 use App\Models\room;

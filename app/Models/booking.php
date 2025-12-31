@@ -19,8 +19,8 @@ class Booking extends Model
     public function casts(): array
     {
         return [
-            'payment_status' => \App\paymentStatus::class,
-            'booking_status' => \App\bookingStatus::class,
+            'payment_status' => \App\Enums\paymentStatus::class,
+            'booking_status' => \App\Enums\bookingStatus::class,
         ];
     }
 

@@ -27,16 +27,18 @@ class changeRoomStatusToAvailableJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $room = room::find($this->roomId);
-        
-        if(!$room) {
+
+        $room = Room::find($this->roomId);
+
+        if (! $room) {
             return;
         }
+        logger()->info("Room status is," . $room->status);
+        
+        $room->update([
+            'status' => roomStatus::AVAILABLE,
+        ]);
+        logger()->info("Room status is," . $room->status);
 
-        if($room->status !== roomStatus::MAINTENANCE->value) {
-            $room->update([
-                'status' => roomStatus::AVAILABLE->value
-            ]);
-        }
     }
 }

@@ -47,7 +47,7 @@ class StoreroomRequest extends FormRequest
             'images.array' => 'Images must be an array.',
             'images.*.image' => 'Each file must be an image.',
             'images.*.mimes' => 'Images must be of type: jpeg, png, jpg, gif, svg.',
-            'images.*.max' => 'Each image must not exceed 20MB.',
+            'images.*.max' => 'Each image must not exceed 20MB.',   
         ];
     }
 }

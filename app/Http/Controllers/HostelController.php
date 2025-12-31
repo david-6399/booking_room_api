@@ -6,16 +6,31 @@ use App\Models\hostel;
 use App\Http\Requests\StorehostelRequest;
 use App\Http\Requests\UpdatehostelRequest;
 use App\Http\Resources\hostelResource;
+use App\Services\Hostel\CreateHostel;
+use App\Services\Hostel\UpdateHostel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HostelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct(
+        protected CreateHostel $createHostel,
+        protected UpdateHostel $updateHostel
+        )
+    {
+
+    }
+
+
     public function index()
     {
-        return hostelResource::collection(hostel::all());
+        return response()->json([
+            'data' => hostelResource::collection(hostel::all())
+        ]);
     }
 
     /**
@@ -23,21 +38,15 @@ class HostelController extends Controller
      */
     public function store(StorehostelRequest $request)
     {
-        hostel::find(1)->clearMediaCollection('hostelImages');
-        dd('done');
-        $data = $request->validated();
-        $hostel = hostel::create($data);
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $hostel->addMedia($image)->toMediaCollection('hostelImages');
-            }
-        } 
+        $result = $this->createHostel->execute($request);
 
         return response()->json([
-            'message'=>'Hostel created successfully', 
-            'data'=> new hostelResource($hostel)
-        ]);
+            'message'=> $result['FilesUploadFailed']
+                ? 'Hostel created successfully, but some images failed to upload'
+                : 'Hostel created successfully',
+            'data' => new hostelResource($result['hostel'])
+        ],201);
+
     }
 
     /**
@@ -45,7 +54,9 @@ class HostelController extends Controller
      */
     public function show(hostel $hostel)
     {
-        return new hostelResource($hostel);
+        return response()->json([
+            'data'=> new hostelResource($hostel)
+        ]);
     }
 
     /**
@@ -53,13 +64,14 @@ class HostelController extends Controller
      */
     public function update(UpdatehostelRequest $request, hostel $hostel)
     {
-        $data = $request->validated();
-        $hostel->update($data);
-        
-        return response()->json([
-            'message'=>'Hostel updated successfully', 
-            'data'=> new hostelResource($hostel)
-        ]);
+        $result = $this->updateHostel->execute($request, $hostel);
+
+       return response()->json([
+            'message' => $result['FilesUploadFailed']
+                ? 'Hostel updated successfully, but some images failed to upload'
+                : 'Hostel updated successfully',
+            'data' => new hostelResource($result['hostel'])
+       ]);
     }
 
     /**

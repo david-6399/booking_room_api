@@ -10,16 +10,22 @@ use App\Http\Requests\UpdateroomRequest;
 use App\Http\Resources\hostelResource;
 use App\Http\Resources\roomResource;
 use App\Models\Room;
+use App\Services\Room\CreateRoom;
+use App\Services\Room\UpdateRoom;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function __construct(protected filter $filter)
-    {
-        
+    public function __construct(
+        protected filter $filter,
+        protected CreateRoom $createRoom,
+        protected UpdateRoom $updateRoom
+    ){
+         
     }
 
     public function index(Request $request)
@@ -29,7 +35,15 @@ class RoomController extends Controller
         $rooms = $this->filter->filter($request)->paginate(10);      
 
         
-        return roomResource::collection($rooms);
+        return response()->json([
+            'data' => roomResource::collection($rooms),
+            'meta' => [
+                'current_page' => $rooms->currentPage(),
+                'last_page' => $rooms->lastPage(),
+                'per_page' => $rooms->perPage(),
+                'total' => $rooms->total(),
+            ],
+        ]);
     }
 
     /**
@@ -45,18 +59,15 @@ class RoomController extends Controller
      */
     public function store(StoreroomRequest $request)
     {
-        $data = $request->validated();
-        $data['hostel_id'] = auth()->user()->hostel->id;
         
-        $room = Room::create($data);
-
-        if($request->hasFile('images')){
-            foreach($request->file('images') as $image){
-                $room->addMedia($image)->toMediaCollection('roomImages');
-            }
-        }
+        $result = $this->createRoom->execute($request);
         
-        return new roomResource($room);
+        return response()->json([
+            'message' => $result['FilesUploadFailed']
+                ? 'Room created successfully, but some images failed to upload'
+                : 'Room created successfully',
+            'data' => new roomResource($result['room'])
+        ], 201);
     }
 
     /**
@@ -64,7 +75,9 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        return new roomResource($room);
+        return response()->json([
+            'data' => new roomResource($room)
+        ]);
     }
 
     /**
@@ -80,9 +93,11 @@ class RoomController extends Controller
      */
     public function update(UpdateroomRequest $request, room $room)
     {
-        $data = $request->validated();
-        $room->update($data);
-        return new roomResource($room);
+        $result = $this->updateRoom->execute($request, $room);
+        return response()->json([
+            'data' => new roomResource($result['room']),
+            'filesUploadFailed' => $result['filesUploadFailed'] ? 'Some images failed to upload.' : 'All images uploaded successfully.'
+        ]);
     }
 
     /**

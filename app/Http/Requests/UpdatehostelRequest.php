@@ -30,6 +30,8 @@ class UpdatehostelRequest extends FormRequest
             'status' => 'sometimes|required|in:active,inactive',
             'phone' => ['sometimes','required','string','max:20','regex:/^(\+213|0)(5|6|7)[0-9]{8}$/'],
             'email' => 'sometimes|required|email|max:255',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ];
     }
 }
