@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room Management - StayEasy Admin</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0891b2',
+            'primary-dark': '#0e7490',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen">
+  <div class="flex min-h-screen">
+    v id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 lg:hidden hidden"></div>
+
+    <div class="flex-1 flex flex-col min-w-0">
+      <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-30">
+        <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center space-x-4">
+            <button id="open-sidebar" class="lg:hidden p-2 rounded-lg hover:bg-gray-100">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+            <h1 class="text-xl font-bold text-gray-900">Room Management</h1>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <button id="open-create-modal" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              <span class="hidden sm:inline">Add Room</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="p-4 sm:p-6 border-b border-gray-100">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div class="relative flex-1 max-w-md">
+                <input type="text" placeholder="Search rooms..." class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </div>
+              <div class="flex items-center space-x-3">
+                <select class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                  <option>All Types</option>
+                  <option>Dorm</option>
+                  <option>Private</option>
+                  <option>Suite</option>
+                </select>
+                <select class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                  <option>All Status</option>
+                  <option>Available</option>
+                  <option>Occupied</option>
+                  <option>Maintenance</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Room</th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Capacity</th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
+                  <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center space-x-3">
+                      <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1" alt="Room" class="w-12 h-9 rounded-lg object-cover">
+                      <div>
+                        <p class="font-medium text-gray-900">Room 101</p>
+                        <p class="text-sm text-gray-500">Ground Floor</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-gray-600">4-Bed Dorm</td>
+                  <td class="px-6 py-4 text-gray-600">4 guests</td>
+                  <td class="px-6 py-4 text-gray-900 font-medium">$25/night</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Available</span>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end space-x-2">
+                      <button class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors" title="Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                      </button>
+                      <button class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center space-x-3">
+                      <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1" alt="Room" class="w-12 h-9 rounded-lg object-cover">
+                      <div>
+                        <p class="font-medium text-gray-900">Room 102</p>
+                        <p class="text-sm text-gray-500">Ground Floor</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-gray-600">6-Bed Dorm</td>
+                  <td class="px-6 py-4 text-gray-600">6 guests</td>
+                  <td class="px-6 py-4 text-gray-900 font-medium">$20/night</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">Occupied</span>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end space-x-2">
+                      <button class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors" title="Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                      </button>
+                      <button class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center space-x-3">
+                      <img src="https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1" alt="Room" class="w-12 h-9 rounded-lg object-cover">
+                      <div>
+                        <p class="font-medium text-gray-900">Room 201</p>
+                        <p class="text-sm text-gray-500">First Floor</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-gray-600">Private Room</td>
+                  <td class="px-6 py-4 text-gray-600">2 guests</td>
+                  <td class="px-6 py-4 text-gray-900 font-medium">$65/night</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Maintenance</span>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end space-x-2">
+                      <button class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors" title="Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                      </button>
+                      <button class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center space-x-3">
+                      <img src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1" alt="Room" class="w-12 h-9 rounded-lg object-cover">
+                      <div>
+                        <p class="font-medium text-gray-900">Room 202</p>
+                        <p class="text-sm text-gray-500">First Floor</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-gray-600">Suite</td>
+                  <td class="px-6 py-4 text-gray-600">3 guests</td>
+                  <td class="px-6 py-4 text-gray-900 font-medium">$95/night</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Available</span>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end space-x-2">
+                      <button class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors" title="Edit">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                      </button>
+                      <button class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Room Modal -->
+  <div id="create-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
+    <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl transform transition-all">
+          <div class="flex items-center justify-between p-6 border-b border-gray-100">
+            <h2 id="create-modal-title" class="text-xl font-bold text-gray-900">Add New Room</h2>
+            <button class="close-modal p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          <form class="p-6 space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="room-number" class="block text-sm font-medium text-gray-700 mb-2">Room Number</label>
+                <input type="text" id="room-number" placeholder="e.g., 101" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+              </div>
+              <div>
+                <label for="room-floor" class="block text-sm font-medium text-gray-700 mb-2">Floor</label>
+                <select id="room-floor" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                  <option>Ground Floor</option>
+                  <option>First Floor</option>
+                  <option>Second Floor</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Room Type</label>
+              <select id="room-type" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                <option>4-Bed Dorm</option>
+                <option>6-Bed Dorm</option>
+                <option>8-Bed Dorm</option>
+                <option>Private Room</option>
+                <option>Suite</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="room-capacity" class="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
+                <input type="number" id="room-capacity" placeholder="4" min="1" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+              </div>
+              <div>
+                <label for="room-price" class="block text-sm font-medium text-gray-700 mb-2">Price/Night</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  <input type="number" id="room-price" placeholder="25" min="0" class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                </div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Amenities</label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">WiFi</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">AC</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">Locker</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">En-suite</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="room-description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea id="room-description" rows="3" placeholder="Brief description of the room..." class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"></textarea>
+            </div>
+          </form>
+          <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
+            <button class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+            <button class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Create Room</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Room Modal -->
+  <div id="edit-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl transform transition-all">
+          <div class="flex items-center justify-between p-6 border-b border-gray-100">
+            <h2 id="edit-modal-title" class="text-xl font-bold text-gray-900">Edit Room</h2>
+            <button class="close-modal p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          <form class="p-6 space-y-5">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="edit-room-number" class="block text-sm font-medium text-gray-700 mb-2">Room Number</label>
+                <input type="text" id="edit-room-number" value="101" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+              </div>
+              <div>
+                <label for="edit-room-floor" class="block text-sm font-medium text-gray-700 mb-2">Floor</label>
+                <select id="edit-room-floor" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                  <option selected>Ground Floor</option>
+                  <option>First Floor</option>
+                  <option>Second Floor</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="edit-room-type" class="block text-sm font-medium text-gray-700 mb-2">Room Type</label>
+              <select id="edit-room-type" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                <option selected>4-Bed Dorm</option>
+                <option>6-Bed Dorm</option>
+                <option>8-Bed Dorm</option>
+                <option>Private Room</option>
+                <option>Suite</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="edit-room-capacity" class="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
+                <input type="number" id="edit-room-capacity" value="4" min="1" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+              </div>
+              <div>
+                <label for="edit-room-price" class="block text-sm font-medium text-gray-700 mb-2">Price/Night</label>
+                <div class="relative">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  <input type="number" id="edit-room-price" value="25" min="0" class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                </div>
+              </div>
+            </div>
+            <div>
+              <label for="edit-room-status" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+              <select id="edit-room-status" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                <option selected>Available</option>
+                <option>Occupied</option>
+                <option>Maintenance</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Amenities</label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">WiFi</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">AC</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" checked class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">Locker</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary">
+                  <span class="text-sm text-gray-600">En-suite</span>
+                </label>
+              </div>
+            </div>
+          </form>
+          <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
+            <button class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+            <button class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+    <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl transform transition-all">
+          <div class="p-6 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+            </div>
+            <h2 id="delete-modal-title" class="text-xl font-bold text-gray-900 mb-2">Delete Room</h2>
+            <p class="text-gray-500 mb-6">Are you sure you want to delete <span class="font-medium text-gray-700">Room 101</span>? This action cannot be undone.</p>
+            <div class="flex items-center justify-center gap-3">
+              <button class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+              <button class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Delete Room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const openSidebarBtn = document.getElementById('open-sidebar');
+    const closeSidebarBtn = document.getElementById('close-sidebar');
+
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      sidebarOverlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden', 'lg:overflow-auto');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      sidebarOverlay.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden', 'lg:overflow-auto');
+    }
+
+    openSidebarBtn.addEventListener('click', openSidebar);
+    closeSidebarBtn.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    const createModal = document.getElementById('create-modal');
+    const editModal = document.getElementById('edit-modal');
+    const deleteModal = document.getElementById('delete-modal');
+
+    function openModal(modal) {
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+      const firstInput = modal.querySelector('input, select, button');
+      if (firstInput) firstInput.focus();
+    }
+
+    function closeModal(modal) {
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    document.getElementById('open-create-modal').addEventListener('click', () => openModal(createModal));
+
+    document.querySelectorAll('.edit-room-btn').forEach(btn => {
+      btn.addEventListener('click', () => openModal(editModal));
+    });
+
+    document.querySelectorAll('.delete-room-btn').forEach(btn => {
+      btn.addEventListener('click', () => openModal(deleteModal));
+    });
+
+    document.querySelectorAll('.close-modal').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const modal = e.target.closest('[role="dialog"]');
+        if (modal) closeModal(modal);
+      });
+    });
+
+    [createModal, editModal, deleteModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal.querySelector('.fixed.inset-0.bg-black\\/50')) {
+          closeModal(modal);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        [createModal, editModal, deleteModal].forEach(modal => {
+          if (!modal.classList.contains('hidden')) {
+            closeModal(modal);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -15,9 +15,9 @@ use App\Models\Room;
 use App\Enums\paymentStatus;
 use App\printAllReservations;
 use App\Enums\roomStatus;
-use App\services\checkInBooking;
-use App\services\checkOutBooking;
-use App\services\confirmBooking;
+use App\Services\checkInBooking;
+use App\Services\checkOutBooking;
+use App\Services\confirmBooking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

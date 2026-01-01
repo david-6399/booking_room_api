@@ -1,6 +1,6 @@
 <?php
 
-namespace App\services;
+namespace App\Services;
 
 use App\Enums\bookingStatus;
 use App\Http\Resources\bookingResource;
