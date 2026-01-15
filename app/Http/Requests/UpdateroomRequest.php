@@ -26,6 +26,7 @@ class UpdateroomRequest extends FormRequest
             'room_type_id' => 'sometimes|required|exists:room_types,id',
             'status' => 'sometimes|required|in:available,occupied,maintenance',
             'capacity' => 'sometimes|required|integer|min:1',
+            'price_per_night' => 'sometimes|required|numeric|min:0',
         ];
     }
 
@@ -42,6 +43,9 @@ class UpdateroomRequest extends FormRequest
             'capacity.required' => 'Capacity is required.',
             'capacity.integer' => 'Capacity must be an integer.',
             'capacity.min' => 'Capacity must be at least 1.',
+            'price_per_night.required' => 'Price per night is required.',
+            'price_per_night.numeric' => 'Price per night must be a number.',
+            'price_per_night.min' => 'Price per night must be at least 0.',
         ];
     }
     

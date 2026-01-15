@@ -23,7 +23,10 @@ class checkOutBooking
     public function checkOut($id)
     {
         // pending  confirmed  checked-in  checked-out  canceled
-        if ($id->status === bookingStatus::CONFIRMED->value || $id->status === bookingStatus::PENDING->value) {
+        if ($id->status === bookingStatus::CONFIRMED->value 
+                || $id->status === bookingStatus::PENDING->value 
+                || $id->status === bookingStatus::CANCELED->value
+            ){
             
             $id->update([
                 'status' => bookingStatus::CANCELED->value,
@@ -35,11 +38,7 @@ class checkOutBooking
             ], 400);
         }
 
-        if($id->status === bookingStatus::CHECKED_OUT->value) {if($id->status === bookingStatus::CHECKED_OUT) {
-            return response()->json([
-                'message' => 'Booking is already checked out'
-            ], 400);
-        }
+        if($id->status === bookingStatus::CHECKED_OUT->value) {
             return response()->json([
                 'message' => 'Booking is already checked out'
             ], 400);

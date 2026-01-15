@@ -30,16 +30,18 @@ route::prefix('v1')->group(function () {
             route::patch('booking/{id}/checkin', [BookingController::class, 'checkIn']);
             route::patch('booking/{id}/checkout', [BookingController::class, 'checkOut']);
 
-            route::apiResource('hostel', HostelController::class);
+            route::apiResource('hostel', HostelController::class)->except('store');
+            route::post('hostel', [HostelController::class, 'store'])->middleware('role:super_admin');
         });
 
         // Guest Route
         route::middleware('role:guest')->group(function () {});
+        
     });
+    require __DIR__ . '/apiAuth.php';
 
     route::get('test', function () {
         return Room::with('hostel')->get();
     });
 
-    require __DIR__ . '/auth.php';
 });

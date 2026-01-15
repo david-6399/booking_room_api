@@ -23,7 +23,6 @@ class Updateroom_typeRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|string|max:255|unique:room_types,name,',
-            'price_per_night' => 'sometimes|required|numeric|min:0',
             'description' => 'nullable|string',
         ];
     }

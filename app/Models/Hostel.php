@@ -9,14 +9,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Multitenancy\Contracts\IsTenant;
+use Spatie\Multitenancy\Models\Concerns\ImplementsTenant;
+use Spatie\Multitenancy\Models\Tenant;
 
-class Hostel extends Model implements HasMedia
+class Hostel extends Tenant implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
     
 
-    protected $guarded = ['id','created_by'];
+    protected $guarded = ['id'];
 
     protected $table = 'hostels';
 

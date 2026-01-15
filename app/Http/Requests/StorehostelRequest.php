@@ -24,7 +24,7 @@ use Illuminate\Foundation\Http\FormRequest;
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string|min:20|max:1000',
-            'slug' => 'nullable|string|unique:hostels,slug',
+            'slug' => 'required|string|unique:hostels,slug',
             'location' => 'required|string|max:255',
             'status' => 'required|in:active,inactive',
             'phone' => ['required','string','max:20','regex:/^(\+213|0)(5|6|7)[0-9]{8}$/'],

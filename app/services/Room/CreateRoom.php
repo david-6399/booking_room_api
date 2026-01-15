@@ -25,9 +25,8 @@ class CreateRoom
         
         $room = DB::transaction(function () use ($request, &$FilesUploadFailed) {
             $data = $request->validated();
-            $data['hostel_id'] = auth()->user()->hostel->id;
 
-            $room = Room::create($data);
+            $room = Room::create([...$data, 'hostel_id' => auth()->user()->hostel->id]);
 
             if ($request->hasFile('images')) {
                 try{  

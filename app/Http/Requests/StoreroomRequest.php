@@ -26,6 +26,7 @@ class StoreroomRequest extends FormRequest
             'room_type_id' => 'required|exists:room_types,id',
             'status' => 'required|in:available,occupied,maintenance',
             'capacity' => 'required|integer|min:1',
+            'price_per_night' => 'required|numeric|min:0',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
         ];
@@ -48,6 +49,9 @@ class StoreroomRequest extends FormRequest
             'images.*.image' => 'Each file must be an image.',
             'images.*.mimes' => 'Images must be of type: jpeg, png, jpg, gif, svg.',
             'images.*.max' => 'Each image must not exceed 20MB.',   
+            'price_per_night.required' => 'Price per night is required.',
+            'price_per_night.numeric' => 'Price per night must be a number.',
+            'price_per_night.min' => 'Price per night must be at least 0.',
         ];
     }
 }

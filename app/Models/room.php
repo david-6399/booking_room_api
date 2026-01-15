@@ -17,7 +17,7 @@ class Room extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
 
-    protected $guarded = ['id','hostel_id'];
+    protected $guarded = ['id'];
 
     protected function casts(): array
     {
@@ -49,7 +49,7 @@ class Room extends Model implements HasMedia
         $this->addMediaCollection('roomImages');
     }
     
-    protected static function booted(): void
+    protected static function booted()  
     {
         static::addGlobalScope(new hostelOwnerScope);
     }

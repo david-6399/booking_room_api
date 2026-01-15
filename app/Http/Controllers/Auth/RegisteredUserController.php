@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 
@@ -19,7 +20,15 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function create()
+    {
+        return view('livewire/auth/pages/register', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => session('status'),
+        ]);
+    }
+
+    public function storeApi(Request $request): Response
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -46,5 +55,35 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
 
         return response()->noContent();
+    }
+
+
+    public function store(Request $request)
+    {
+        
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],    
+            'phone' => ['nullable', 'integer'],
+            'admin_code' => ['nullable', 'string'],
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->string('password')),
+        ]);
+
+        if ($request->filled('admin_code') && $request->admin_code === 'admin123') {
+            $user->assignRole('admin');
+        } else {    
+            $user->assignRole('guest');
+        }
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect(route('dashboard'));
     }
 }

@@ -6,7 +6,7 @@ use App\Enums\bookingStatus;
 use App\Http\Resources\bookingResource;
 use App\Models\Room;
 use App\Enums\paymentStatus;
-use App\Enums\roomStatus;
+use App\Enums\roomStatus;   
 use Illuminate\Support\Facades\DB;
 
 class confirmBooking
@@ -24,6 +24,24 @@ class confirmBooking
         if ($id->status === bookingStatus::CONFIRMED->value) {
             return response()->json([
                 'message' => 'Booking is already confirmed'
+            ], 400);
+        }
+
+        if ($id->status === bookingStatus::CHECKED_OUT->value) {
+            return response()->json([
+                'message' => 'This booking has already been checked out'
+            ], 400);
+        }
+
+        if ($id->status === bookingStatus::CANCELED->value) {
+            return response()->json([
+                'message' => 'This booking has been canceled and cannot be confirmed'
+            ], 400);
+        }
+
+        if ($id->status === bookingStatus::CHECKED_IN->value) {
+            return response()->json([
+                'message' => 'This booking has already been checked in'
             ], 400);
         }
 
@@ -46,13 +64,10 @@ class confirmBooking
 
             $room = Room::find($id->room_id);
             $room->update([
-                'status' => roomStatus::AVAILABLE->value
+                'status' => roomStatus::OCCUPIED->value
             ]);
         });
 
-        return response()->json([
-            'message' => 'Booking confirmed successfully',
-            'booking' => bookingResource::make($id)
-        ], 200);
+        return bookingResource::make($id);          
     }
 }

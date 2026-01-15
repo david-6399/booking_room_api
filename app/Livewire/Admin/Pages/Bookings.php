@@ -8,6 +8,7 @@ class Bookings extends Component
 {
     public function render()
     {
+        
         return view('livewire.admin.pages.Bookings')
             ->layout('livewire.admin.layouts.app',[
                 'header' => 'Booking Management'

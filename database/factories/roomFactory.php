@@ -20,6 +20,7 @@ class roomFactory extends Factory
             'room_number' => $this->faker->unique()->numberBetween(100, 999),
             'room_type_id' => \App\Models\room_type::inRandomOrder()->first()->id,
             'status' => $this->faker->randomElement(['available', 'occupied', 'maintenance']),
+            'price_per_night' => $this->faker->randomFloat(2, 50, 300),
             'capacity' => $this->faker->numberBetween(1, 4),
             'hostel_id' => $this->faker->numberBetween(1, 10),
         ];

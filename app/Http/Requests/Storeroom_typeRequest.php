@@ -23,7 +23,6 @@ class Storeroom_typeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|unique:room_types,name',
-            'price_per_night' => 'required|numeric|min:0',
             'description' => 'nullable|string',
         ];
     }

@@ -15,7 +15,7 @@ class Room_type extends Model
     use HasFactory;
 
 
-    protected $guarded = ['id','hostel_id'];
+    protected $guarded = ['id'];
 
     protected $table = 'room_types';
 

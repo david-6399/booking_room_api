@@ -16,41 +16,43 @@ class CreateHostel
      */
     public function __construct()
     {
-        //
-    }
-
-    public function execute(StorehostelRequest $request){
-
-        $FilesUploadFailed = false ;
-
-        $hostel = DB::transaction(function() use ($request, &$FilesUploadFailed){
-            
-            $data = $request->validated();
-            $hostel = Hostel::create($data);
-    
-            if ($request->hasFile('images')) {
-                try{
-                    
-                    foreach ($request->file('images') as $image) {
-                        $hostel->addMedia($image)->toMediaCollection('hostelImages');
-                    }
-
-                }catch(\Exception $e){
-                    $FilesUploadFailed = true ;
-                    Log::error('Hostel Images upload failed',[
-                        'error' => $e,
-                        'hostel_id' => $hostel->id
-                    ]);
-                }
-            }  
-            return $hostel;  
-        });
-
-        return [
-            'hostel' => $hostel->refresh(),
-            'FilesUploadFailed' => $FilesUploadFailed
-        ];
-
         
     }
+
+        public function execute(StorehostelRequest $request){
+            
+            $FilesUploadFailed = false ;
+            
+
+            $hostel = DB::transaction(function() use ($request, &$FilesUploadFailed){
+                
+                $data = $request->validated();
+                $hostel = Hostel::create($data);
+        
+                if ($request->hasFile('images')) {
+                    try{
+                        
+                        foreach ($request->file('images') as $image) {
+                            $hostel->addMedia($image)->toMediaCollection('hostelImages');
+                        }
+
+                    }catch(\Exception $e){
+                        $FilesUploadFailed = true ;
+                        Log::error('Hostel Images upload failed',[
+                            'error' => $e,
+                            'hostel_id' => $hostel->id
+                        ]);
+                    }
+                }  
+                return $hostel;  
+            });
+            
+
+            return [
+                'hostel' => $hostel->refresh(),
+                'FilesUploadFailed' => $FilesUploadFailed
+            ];
+
+            
+        }
 }

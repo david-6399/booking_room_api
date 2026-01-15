@@ -3,16 +3,18 @@
 namespace App\Models;
 
 use App\Models\Scopes\hostelOwnerScope;
+use App\Models\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\WithPagination;
 
 class Booking extends Model
 {
     /** @use HasFactory<\Database\Factories\BookingFactory> */
-    use HasFactory;
+    use HasFactory , WithPagination;
 
 
-    protected $guarded = ['id','hostel_id'];
+    protected $guarded = ['id'];
 
     protected $table = 'bookings';
 
@@ -44,6 +46,7 @@ class Booking extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new hostelOwnerScope);
+        static::addGlobalScope(new TenantScope);
     }
 
 }

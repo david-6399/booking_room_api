@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatehostelRequest;
 use App\Http\Resources\hostelResource;
 use App\Services\Hostel\CreateHostel;
 use App\Services\Hostel\UpdateHostel;
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,8 +23,10 @@ class HostelController extends Controller
         protected UpdateHostel $updateHostel
         )
     {
-
+      
     }
+
+    
 
 
     public function index()
@@ -38,6 +41,7 @@ class HostelController extends Controller
      */
     public function store(StorehostelRequest $request)
     {
+        
         $result = $this->createHostel->execute($request);
 
         return response()->json([
@@ -70,7 +74,7 @@ class HostelController extends Controller
             'message' => $result['FilesUploadFailed']
                 ? 'Hostel updated successfully, but some images failed to upload'
                 : 'Hostel updated successfully',
-            'data' => new hostelResource($result['hostel'])
+            'data' => new hostelResource($result['data'])
        ]);
     }
 

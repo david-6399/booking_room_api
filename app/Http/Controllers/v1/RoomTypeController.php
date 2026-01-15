@@ -29,9 +29,14 @@ class RoomTypeController extends Controller
      */
     public function store(Storeroom_typeRequest $request)
     {
+        $hostelId = auth()->user()->hostel->id;
         $validatedData = $request->validated();
-        $validatedData['hostel_id'] = auth()->user()->hostel->id;
-        $roomType = Room_type::create($validatedData);
+        
+        $roomType = Room_type::create([
+            ...$validatedData,
+            'hostel_id' => $hostelId
+        ]);
+
         return response()->json([
             'message' => 'Room Type created successfully',
             'data' => new roomTypeResource($roomType)

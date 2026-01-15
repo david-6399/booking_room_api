@@ -20,9 +20,9 @@ class UpdateHostel
     public function execute(UpdatehostelRequest $request, $hostel)
     {
         $FilesUploadFailed = false;
-        
         $data = $request->validated();
         $hostel->update($data);
+        // dd($hostel); 
 
         if ($request->hasFile('images')) {
             try {

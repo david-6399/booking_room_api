@@ -54,6 +54,6 @@ class filter
             $query->where('check_in_date', $request->check_in_date);
         }
 
-        return $query->get();
+        return $query->paginate(10);
     }
 }

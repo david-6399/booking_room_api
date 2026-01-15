@@ -44,11 +44,19 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorebookingRequest $request)
+    public function store(StorebookingRequest $request, createNewBooking $service)
     {
         // check availibility + user + room + check in date + check out date
         
-        return $this->createNewBooking->createBooking($request);
+        $data = $request->validated();  
+
+
+        $booking = $service->create($data);
+
+        return response()->json([
+            'message' => 'Booking created successfully',
+            'booking' => $booking,
+        ], 201);
         
     }
 
@@ -78,7 +86,12 @@ class BookingController extends Controller
 
     public function confirm(Booking $id)
     {
-        return $this->confirmBooking->confirm($id);
+            $bookingDone = $this->confirmBooking->confirm($id);
+        
+        return response()->json([
+            'message' => 'Booking confirmed successfully',
+            'booking' => $bookingDone
+        ], 200);
     }
 
     public function checkIn(Booking $id)
