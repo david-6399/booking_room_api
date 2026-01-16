@@ -134,7 +134,7 @@
                             </div>
                             <div class="flex items-center justify-between mt-3">
                                 <div>
-                                    <span class="text-xl font-bold text-primary">DA{{ $room->roomType->price_per_night }}</span>
+                                    <span class="text-xl font-bold text-primary">DA{{ $room->price_per_night }}</span>
                                     <span class="text-gray-500 text-sm">/night</span>
                                 </div>
                                 <span class="text-primary text-sm font-medium">View Details</span>

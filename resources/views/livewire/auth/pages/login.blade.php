@@ -69,7 +69,7 @@
         <div class="mt-6 text-center">
           <p class="text-gray-500 text-sm">
             Don't have an account?
-            <a href="register.html" class="text-primary font-medium hover:underline">Create one</a>
+            <a href="{{ route('register') }}" class="text-primary font-medium hover:underline">Create one</a>
           </p>
         </div>
 

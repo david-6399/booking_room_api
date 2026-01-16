@@ -48,7 +48,12 @@
                         </label>
                         <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
                     </div>
-
+                     <div class="mt-6 text-center">
+          <p class="text-gray-500 text-sm">
+            Don't have an account?
+            <a href="{{ route('register') }}" class="text-primary font-medium hover:underline">Create one</a>
+          </p>
+        </div>
                     <button type="submit"
                         class="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-semibold transition-colors">
                         Sign In

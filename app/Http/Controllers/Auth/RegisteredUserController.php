@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
+use App\Models\Hostel;
+use App\Models\Room;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -80,10 +83,20 @@ class RegisteredUserController extends Controller
             $user->assignRole('guest');
         }
 
+        
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard'));
+        if (session()->has('booking_data')) {
+            session()->flash('success', 'Account created successfully. Please complete your booking.');
+            return redirect()->route('tenant.roomDetails', [
+                'id' => session('booking_data.room_id'),
+                'slug' => Room::find(session('booking_data.room_id'))->hostel->slug,
+            ]);
+        }
+
+        return redirect(route('user.home'));
     }
 }

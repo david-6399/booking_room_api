@@ -427,7 +427,7 @@
                         <div class="flex items-baseline justify-between mb-6">
                             <div>
                                 <span
-                                    class="text-3xl font-bold text-gray-900">DA{{ $selectedRoom->roomType->price_per_night }}</span>
+                                    class="text-3xl font-bold text-gray-900">DA{{ $selectedRoom->price_per_night }}</span>
                                 <span class="text-gray-500">/night</span>
                             </div>
                             <span
@@ -470,7 +470,7 @@
                             <!-- Price Breakdown -->
                             <div class="border-t border-gray-100 pt-4 mt-4">
                                 <div class="flex justify-between text-sm mb-2">
-                                    <span class="text-gray-600">{{ $selectedRoom->roomType->price_per_night  }} x <span id="nights-count">{{ $nightsCount }}</span> nights</span>
+                                    <span class="text-gray-600">{{ $selectedRoom->price_per_night  }} x <span id="nights-count">{{ $nightsCount }}</span> nights</span>
                                     <span class="text-gray-900" id="subtotal">{{ $totalPrice }} DA</span>
                                 </div>
                                 <div class="flex justify-between text-sm mb-2">
@@ -687,18 +687,18 @@
             checkoutInput.addEventListener('change', updatePrice);
         }
 
-        function updatePrice() {
-            const checkin = new Date(checkinInput.value);
-            const checkout = new Date(checkoutInput.value);
-            const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+        // function updatePrice() {
+        //     const checkin = new Date(checkinInput.value);
+        //     const checkout = new Date(checkoutInput.value);
+        //     const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
 
-            if (nights > 0) {
-                document.getElementById('nights-count').textContent = nights;
-                const subtotal = nights * 45;
-                document.getElementById('subtotal').textContent = '$' + subtotal;
-                document.getElementById('total').textContent = '$' + (subtotal + 10);
-            }
-        }
+        //     if (nights > 0) {
+        //         document.getElementById('nights-count').textContent = nights;
+        //         const subtotal = nights * 45;
+        //         document.getElementById('subtotal').textContent = '$' + subtotal;
+        //         document.getElementById('total').textContent = '$' + (subtotal + 10);
+        //     }
+        // }
 
         const reviewModal = document.getElementById('review-modal');
         const openReviewModalBtn = document.getElementById('open-review-modal');

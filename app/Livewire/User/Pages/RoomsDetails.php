@@ -19,11 +19,11 @@ class RoomsDetails extends Component
 
     public $nightsCount = 0;
 
+    public $price = 0;
+
     public function mount(Room $id)
     {
-        
         $this->selectedRoom = $id;
-
 
         if (session()->has('booking_data')) {
             $data = session('booking_data');
@@ -31,6 +31,9 @@ class RoomsDetails extends Component
             $this->bookingData['room_id']   = $data['room_id'];
             $this->bookingData['check_in_date']  = $data['check_in_date'];
             $this->bookingData['check_out_date'] = $data['check_out_date'];
+            $this->nightsCount = $data['nights_count'];
+            $this->totalPrice = $data['total_amount'];
+            $this->price = $data['price_per_night'];
         }
     }
 
@@ -53,10 +56,10 @@ class RoomsDetails extends Component
             return;
         }
 
-        $price = $this->selectedRoom->roomType->price_per_night;
+        $this->price = $this->selectedRoom->price_per_night;
 
         $this->nightsCount = ($checkOut - $checkIn) / 86400;
-        $this->totalPrice = $price * $this->nightsCount;
+        $this->totalPrice = $this->price * $this->nightsCount;
     }
 
     
@@ -78,6 +81,9 @@ class RoomsDetails extends Component
                 'room_id' => $this->selectedRoom->id ,
                 'check_in_date' => $this->bookingData['check_in_date'],
                 'check_out_date' => $this->bookingData['check_out_date'],
+                'total_amount' => $this->totalPrice,
+                'nights_count' => $this->nightsCount,
+                'price_per_night' => $this->selectedRoom->price_per_night,
                 ]
         ]);
             
@@ -92,6 +98,7 @@ class RoomsDetails extends Component
 
     public function completeBooking()
     {
+
         if (! session()->has('booking_data')) {
             return;
         }
@@ -99,14 +106,16 @@ class RoomsDetails extends Component
         $service = app(CreateNewBooking::class);
 
         $data = session('booking_data');
+        unset($data['nights_count'], $data['price_per_night'], $data['total_amount']);
         $data['user_id'] = auth()->id();
-
+        
+            
         $booking = $service->create($data);
 
         session()->forget('booking_data');
 
         session()->flash('success', 'Booking created successfully');
-        return redirect()->route('user.confirmation', ['bookingId' => $booking->id , 'slug' => $this->selectedRoom->hostel->slug]);
+        return redirect()->route('tenant.confirmation', ['bookingId' => $booking->id , 'slug' => $this->selectedRoom->hostel->slug]);
     }
 
 

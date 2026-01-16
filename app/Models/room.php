@@ -21,7 +21,7 @@ class Room extends Model implements HasMedia
 
     protected function casts(): array
     {
-        return [
+        return [    
             'status' => roomStatus::class,
         ];
     }

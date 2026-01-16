@@ -60,13 +60,9 @@ route::get('/hostels', function(){
 
 
 
-
-
-
-
 route::middleware(['tenant','web'])->prefix('{slug}')->group(function () {
     
-    route::get('/confirmation', Confirmation::class)->name('user.confirmation'); // may go with multi tenant
+    route::get('/confirmation', Confirmation::class)->name('tenant.confirmation'); // may go with multi tenant
         
     route::get('/room/{id}', RoomsDetails::class)->name('tenant.roomDetails');
 

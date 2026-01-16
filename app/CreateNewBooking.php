@@ -24,7 +24,7 @@ class CreateNewBooking
 
             
             $room = Room::lockForUpdate()->find($data['room_id']);
-            
+
             if (! $room) {
                 throw ValidationException::withMessages([
                     'room_id' => 'Room not found',
