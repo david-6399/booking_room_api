@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('room_number')->unique();
             $table->integer('capacity');
-            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('available');
+            $table->enum('status', ['available', 'occupied', 'maintenance'])->default('maintenance');
             $table->decimal('price_per_night', 8, 2);
             $table->timestamps();
             

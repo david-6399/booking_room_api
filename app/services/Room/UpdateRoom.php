@@ -4,6 +4,7 @@ namespace App\Services\Room;
 
 use App\Http\Requests\UpdateroomRequest;
 use App\Http\Resources\roomResource;
+use App\Models\Room;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,16 +18,16 @@ class UpdateRoom
         //
     }
 
-    public function execute(UpdateroomRequest $request, $room)
+    public function execute($data, $id, $images)
     {
+
         $FilesUploadFailed = false;
+        $room = Room::find($id);
 
-        $data = $request->validated();
-        $room->update($data);
-
-        if ($request->hasFile('images')) {
+        $room->update($data);   
+        if (!empty($images)) {
             try {
-                foreach ($request->file('images') as $image) {
+                foreach ($images as $image) {
                     $room->addMedia($image)->toMediaCollection('roomImages');
                 }
             } catch (\Exception $e) {

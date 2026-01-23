@@ -1,7 +1,7 @@
 <div>
     <div class="flex min-h-screen">
         <div class="flex-1 flex flex-col min-w-0">
-            
+
 
             <main class="flex-1 p-4 sm:p-6 lg:p-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -9,7 +9,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-500">Total Bookings</p>
-                                <p class="text-2xl font-bold text-gray-900 mt-1">156</p>
+                                <p class="text-2xl font-bold text-gray-900 mt-1">{{ $bookingNb }}</p>
                             </div>
                             <div class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor"
@@ -24,7 +24,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-500">Confirmed</p>
-                                <p class="text-2xl font-bold text-green-600 mt-1">89</p>
+                                <p class="text-2xl font-bold text-green-600 mt-1">{{ $confirmedNb }}</p>
                             </div>
                             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
@@ -39,7 +39,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-500">Pending</p>
-                                <p class="text-2xl font-bold text-yellow-600 mt-1">42</p>
+                                <p class="text-2xl font-bold text-yellow-600 mt-1">{{ $pendingNb }}</p>
                             </div>
                             <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor"
@@ -54,7 +54,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm text-gray-500">Cancelled</p>
-                                <p class="text-2xl font-bold text-red-600 mt-1">25</p>
+                                <p class="text-2xl font-bold text-red-600 mt-1">{{ $cancelledNb }}</p>
                             </div>
                             <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                                 <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor"
@@ -81,16 +81,29 @@
                             </div>
                             <div class="flex items-center space-x-3">
                                 <select
-                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                    <option>All Status</option>
-                                    <option>Confirmed</option>
-                                    <option>Pending</option>
-                                    <option>Checked In</option>
-                                    <option>Checked Out</option>
-                                    <option>Cancelled</option>
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='perStatus'>
+                                    <option value = "">All Status</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="checked_in">Checked In</option>
+                                    <option value="checked_out">Checked Out</option>
+                                    <option value="canceled">Cancelled</option>
                                 </select>
+                                <select
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='perPage'>
+                                    <option value="6">6 Per Page</option>
+                                    <option value="10">10 Per Page</option>
+                                    <option value="15">15 Per Page</option>
+                                    <option value="20">20 Per Page</option>
+                                </select>
+                                <label for="">From : </label>
                                 <input type="date"
-                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" wire:model.live='perDateStart'>
+                                <label for="">To : </label>
+                                    <input type="date"
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" wire:model.live='perDateEnd'>
                             </div>
                         </div>
                     </div>
@@ -123,244 +136,106 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <span class="font-mono text-sm text-primary">#BK-2024-001</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="font-medium text-gray-900">John Smith</p>
-                                            <p class="text-sm text-gray-500">john@email.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Room 101 - 4-Bed Dorm</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 20, 2024</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 23, 2024</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Confirmed</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Change Status">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <span class="font-mono text-sm text-primary">#BK-2024-002</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="font-medium text-gray-900">Sarah Johnson</p>
-                                            <p class="text-sm text-gray-500">sarah@email.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Room 201 - Private Room</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 22, 2024</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 25, 2024</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Pending</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Change Status">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <span class="font-mono text-sm text-primary">#BK-2024-003</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="font-medium text-gray-900">Mike Davis</p>
-                                            <p class="text-sm text-gray-500">mike@email.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Room 102 - 6-Bed Dorm</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 18, 2024</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 21, 2024</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Checked
-                                            In</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Change Status">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <span class="font-mono text-sm text-primary">#BK-2024-004</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="font-medium text-gray-900">Emma Wilson</p>
-                                            <p class="text-sm text-gray-500">emma@email.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Room 202 - Suite</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 15, 2024</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 17, 2024</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Checked
-                                            Out</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Change Status">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <span class="font-mono text-sm text-primary">#BK-2024-005</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div>
-                                            <p class="font-medium text-gray-900">James Brown</p>
-                                            <p class="text-sm text-gray-500">james@email.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Room 101 - 4-Bed Dorm</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 24, 2024</td>
-                                    <td class="px-6 py-4 text-gray-600">Dec 27, 2024</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">Cancelled</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="View">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Change Status">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @foreach ($bookings as $booking)
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <span class="font-mono text-sm text-primary">#BK-2024-001 |
+                                                {{ $booking->id }}</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div>
+                                                <p class="font-medium text-gray-900">{{ $booking->user->name }}</p>
+                                                <p class="text-sm text-gray-500">{{ $booking->user->email }}</p>
+                                            </div>
+                                        </td>
+                                        {{-- <td class="px-6 py-4 text-gray-600">Room 101 - 4-Bed Dorm</td> --}}
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ 'Room ' . $booking->room->room_number ?? 'null' }} -
+                                            {{ 'Bed ' . $booking->room->capacity ?? 'null' }}</td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ carbon\carbon::parse($booking->check_in_date)->format('M d D, Y') }}</td>
+                                        <td class="px-6 py-4 text-gray-600">
+                                            {{ carbon\carbon::parse($booking->check_out_date)->format('M d D, Y') }}
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ detectBookingStatus($booking->status) }}">{{ $booking->status }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class="view-booking-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                                                    title="View" wire:click='viewBooking({{ $booking->id }})'>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    class="change-status-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                                                    title="Change Status"
+                                                    wire:click='changeStatus({{ $booking->id }})'>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
 
                     <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                        <p class="text-sm text-gray-500">Showing 1-5 of 156 bookings</p>
+                        <p class="text-sm text-gray-500">Showing
+                            {{ $bookings->firstItem() }}-{{ $bookings->lastItem() }} of {{ $bookings->total() }}
+                            bookings</p>
                         <div class="flex items-center space-x-2">
-                            <button
-                                class="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">Previous</button>
-                            <button class="px-3 py-1.5 text-sm bg-primary text-white rounded-lg">1</button>
-                            <button
-                                class="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">2</button>
-                            <button
-                                class="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">3</button>
-                            <button
-                                class="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">Next</button>
+                            <button wire:click='previousPage' wire:loading.attr='disabled'
+                                @class([
+                                    'p-2 rounded-lg border transition-colors',
+                                    'border-gray-200 text-gray-400 cursor-not-allowed' => $bookings->onFirstPage(),
+                                    'border-gray-200 text-gray-700 hover:bg-gray-50' => !$bookings->onFirstPage(),
+                                ]) @disabled($bookings->onFirstPage())>
+
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 19l-7-7 7-7" />
+                                </svg>
+
+                            </button>
+                            @foreach (range(1, $bookings->lastPage()) as $page)
+                                @if ($page == 1 || $page == $bookings->lastPage() || abs($page - $bookings->currentPage()) <= 1)
+                                    <button wire:click='gotoPage({{ $page }})'
+                                        class="w-10 h-10 rounded-lg font-medium transition-colors
+                    {{ $bookings->currentPage() == $page
+                        ? 'bg-primary text-white'
+                        : 'border border-gray-200 text-gray-700 hover:bg-gray-50' }}">{{ $page }}
+                                    </button>
+                                @elseif ($page == 2 || $page == $bookings->lastPage() - 1)
+                                    <span class="text-gray-400">...</span>
+                                @endif
+                            @endforeach
+
+                            <button wire:click="nextPage" wire:loading.attr="disabled" @class([
+                                'p-2 rounded-lg border transition-colors',
+                                'border-gray-200 text-gray-400 cursor-not-allowed' => !$bookings->hasMorePages(),
+                                'border-gray-200 text-gray-700 hover:bg-gray-50' => $bookings->hasMorePages(),
+                            ])
+                                @disabled(!$bookings->hasMorePages())>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -370,7 +245,7 @@
 
     <!-- Change Status Modal -->
     <div id="status-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
-        aria-labelledby="status-modal-title">
+        aria-labelledby="status-modal-title" wire:ignore.self>
         <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
         <div class="fixed inset-0 overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4">
@@ -388,7 +263,8 @@
                     <div class="p-6">
                         <div class="mb-6">
                             <p class="text-sm text-gray-500 mb-1">Booking ID</p>
-                            <p class="font-mono text-primary font-medium">#BK-2024-001</p>
+                            <p class="font-mono text-primary font-medium">#BK-2024-001 |
+                                {{ $bookingInfo->id ?? 'No Id' }}</p>
                         </div>
                         <div class="mb-6">
                             <p class="text-sm text-gray-500 mb-1">Current Status</p>
@@ -428,7 +304,7 @@
 
     <!-- View Booking Modal -->
     <div id="view-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
-        aria-labelledby="view-modal-title">
+        aria-labelledby="view-modal-title" wire:ignore.self>
         <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
         <div class="fixed inset-0 overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4">
@@ -443,87 +319,101 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="p-6 space-y-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm text-gray-500">Booking ID</p>
-                                <p class="font-mono text-primary font-medium">#BK-2024-001</p>
+                    @if ($bookingInfo)
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">Booking ID</p>
+                                    <p class="font-mono text-primary font-medium">#BK-2024-001 |
+                                        {{ $bookingInfo->id ?? 'null' }}</p>
+                                </div>
+                                <span
+                                    class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">{{ $bookingInfo->status ?? 'null' }}</span>
                             </div>
-                            <span
-                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Confirmed</span>
-                        </div>
 
-                        <div class="border-t border-gray-100 pt-6">
-                            <h3 class="text-sm font-semibold text-gray-900 mb-3">Guest Information</h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm text-gray-500">Name</p>
-                                    <p class="font-medium text-gray-900">John Smith</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Phone</p>
-                                    <p class="font-medium text-gray-900">+1 (555) 123-4567</p>
-                                </div>
-                                <div class="col-span-2">
-                                    <p class="text-sm text-gray-500">Email</p>
-                                    <p class="font-medium text-gray-900">john@email.com</p>
+                            <div class="border-t border-gray-100 pt-6">
+                                <h3 class="text-sm font-semibold text-gray-900 mb-3">Guest Information</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Name</p>
+                                        <p class="font-medium text-gray-900">{{ $bookingInfo->user->name }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Phone</p>
+                                        <p class="font-medium text-gray-900">
+                                            {{ $bookingInfo->user->phone ?? 'No Phone Number' }}</p>
+                                    </div>
+                                    <div class="col-span-2">
+                                        <p class="text-sm text-gray-500">Email</p>
+                                        <p class="font-medium text-gray-900">{{ $bookingInfo->user->email }}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="border-t border-gray-100 pt-6">
-                            <h3 class="text-sm font-semibold text-gray-900 mb-3">Booking Details</h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <p class="text-sm text-gray-500">Room</p>
-                                    <p class="font-medium text-gray-900">Room 101</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Type</p>
-                                    <p class="font-medium text-gray-900">4-Bed Dorm</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Check In</p>
-                                    <p class="font-medium text-gray-900">Dec 20, 2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Check Out</p>
-                                    <p class="font-medium text-gray-900">Dec 23, 2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Guests</p>
-                                    <p class="font-medium text-gray-900">2</p>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Nights</p>
-                                    <p class="font-medium text-gray-900">3</p>
-                                </div>
-                            </div>
-                        </div>
+                            <div class="border-t border-gray-100 pt-6">
+                                <h3 class="text-sm font-semibold text-gray-900 mb-3">booking Details </h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-500">Room</p>
+                                        <p class="font-medium text-gray-900">
+                                            {{ 'Room ' . $bookingInfo->room->room_number }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Type</p>
+                                        <p class="font-medium text-gray-900">
+                                            {{ $bookingInfo->room->roomType->name ?? 'No Type' }} |
+                                            {{ $bookingInfo->room->capacity . '-Bed Dorm' }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Check In</p>
 
-                        <div class="border-t border-gray-100 pt-6">
-                            <h3 class="text-sm font-semibold text-gray-900 mb-3">Payment Summary</h3>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Room Rate (3 nights x $25)</span>
-                                    <span class="text-gray-900">$75.00</span>
+                                        <p class="font-medium text-gray-900">
+                                            {{ carbon\carbon::parse($bookingInfo->check_in_date)->format('M d D, Y') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Check Out</p>
+                                        <p class="font-medium text-gray-900">
+                                            {{ carbon\carbon::parse($bookingInfo->check_out_date)->format('M d D, Y') }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Guests</p>
+                                        <p class="font-medium text-gray-900">2</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-500">Nights</p>
+                                        <p class="font-medium text-gray-900">{{ $nightCount }} Night</p>
+                                    </div>
                                 </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Taxes & Fees</span>
-                                    <span class="text-gray-900">$8.25</span>
-                                </div>
-                                <div class="flex justify-between font-medium pt-2 border-t border-gray-100">
-                                    <span class="text-gray-900">Total</span>
-                                    <span class="text-primary">$83.25</span>
+                            </div>
+
+                            <div class="border-t border-gray-100 pt-6">
+                                <h3 class="text-sm font-semibold text-gray-900 mb-3">Payment Summary</h3>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-500">Room Rate ({{ $nightCount }} nights x
+                                            {{ $roomPrice }} DA)</span>
+                                        <span class="text-gray-900">{{ $bookingTotalAmount }} DA</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-500">Taxes & Fees</span>
+                                        <span class="text-gray-900">{{ $bookingTaxes }}</span>
+                                    </div>
+                                    <div class="flex justify-between font-medium pt-2 border-t border-gray-100">
+                                        <span class="text-gray-900">Total</span>
+                                        <span class="text-primary">{{ $bookingTaxes + $bookingTotalAmount }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
                         <button
                             class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Close</button>
                         <button
-                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center space-x-2">
+                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center space-x-2"
+                            wire:click='printBookingDetails'>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -568,18 +458,32 @@
             if (firstInput) firstInput.focus();
         }
 
+
+        //-----------------------VERIFIED------------------------
+
         function closeModal(modal) {
             modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
+
+            @this.call('resetAfterClosingModal')
         }
 
-        document.querySelectorAll('.change-status-btn').forEach(btn => {
-            btn.addEventListener('click', () => openModal(statusModal));
-        });
+        document.addEventListener('openBookingDetailsModal', function() { // verified
+            openModal(viewModal);
+        })
 
-        document.querySelectorAll('.view-booking-btn').forEach(btn => {
-            btn.addEventListener('click', () => openModal(viewModal));
-        });
+        document.addEventListener('openChangeStatusModal', function() { // verified
+            openModal(statusModal);
+        })
+
+        //-----------------------------------------------
+
+        // document.querySelectorAll('.change-status-btn').forEach(btn => {
+        //     btn.addEventListener('click', () => openModal(statusModal));
+        // });
+
+        // document.querySelectorAll('.view-booking-btn').forEach(btn => {
+        //     btn.addEventListener('click', () => openModal(viewModal));
+        // });
 
         document.querySelectorAll('.close-modal').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -598,7 +502,7 @@
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                [statusModal, viewModal].forEach(modal => {
+                [viewModal, statusModal].forEach(modal => {
                     if (!modal.classList.contains('hidden')) {
                         closeModal(modal);
                     }

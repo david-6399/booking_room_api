@@ -24,7 +24,6 @@ class StoreroomRequest extends FormRequest
         return [
             'room_number' => 'required|unique:rooms,room_number|max:10',
             'room_type_id' => 'required|exists:room_types,id',
-            'status' => 'required|in:available,occupied,maintenance',
             'capacity' => 'required|integer|min:1',
             'price_per_night' => 'required|numeric|min:0',
             'images' => 'nullable|array',

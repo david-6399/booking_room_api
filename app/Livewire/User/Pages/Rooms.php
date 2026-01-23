@@ -12,19 +12,22 @@ class Rooms extends Component
 
     public $perPage = 8;
 
-    
-
-    public function openRoom(Room $roomId)
+    public function openRoom(int $id)
     {
-        $slug = $roomId->hostel->slug;
-        return redirect()->route('tenant.roomDetails', ['slug' => $slug, 'id' => $roomId->id]);
+        $room = Room::findOrFail($id);
+
+        return redirect()->route('tenant.roomDetails', [
+            'slug' => $room->hostel->slug,
+            'id'   => $room->id,
+        ]);
     }
+
     public function render()
     {
-        $rooms = Room::withoutGlobalScopes()->paginate($this->perPage);
-        return view('livewire.user.pages.rooms',[
+        $rooms = Room::latest()->paginate($this->perPage);
+
+        return view('livewire.user.pages.rooms', [
             'rooms' => $rooms,
-        ])
-                ->layout('livewire.user.layouts.app');
+        ])->layout('livewire.user.layouts.app');
     }
 }

@@ -23,6 +23,8 @@ class Booking extends Model
         return [
             'payment_status' => \App\Enums\paymentStatus::class,
             'booking_status' => \App\Enums\bookingStatus::class,
+            'check_in_date' => 'date',
+            'check_out_date' => 'date',
         ];
     }
 

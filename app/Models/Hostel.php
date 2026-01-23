@@ -49,6 +49,7 @@ class Hostel extends Tenant implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('hostelImages');
+        $this->addMediaCollection('hostelCover');
     }
 
 

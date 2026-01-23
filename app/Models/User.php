@@ -57,4 +57,7 @@ class User extends Authenticatable
     public function hostel(){
         return $this->hasOne(hostel::class, 'created_by', 'id');
     }
+
+
+    
 }

@@ -58,6 +58,10 @@ route::get('/hostels', function(){
     return view('livewire.user.pages.hostel');
 });
 
+route::get('/comp', function(){
+    return view('livewire.user.layouts.components');
+});
+
 
 
 route::middleware(['tenant','web'])->prefix('{slug}')->group(function () {

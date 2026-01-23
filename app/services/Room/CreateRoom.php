@@ -19,18 +19,17 @@ class CreateRoom
         //
     }
 
-    public function execute(StoreroomRequest $request){
+    public function execute($data, $images = null){
 
         $FilesUploadFailed = false ;
         
-        $room = DB::transaction(function () use ($request, &$FilesUploadFailed) {
-            $data = $request->validated();
+        $room = DB::transaction(function () use ($data, $images, &$FilesUploadFailed) {
 
             $room = Room::create([...$data, 'hostel_id' => auth()->user()->hostel->id]);
-
-            if ($request->hasFile('images')) {
+        
+            if (!empty($images)) {
                 try{  
-                    foreach ($request->file('images') as $image) {
+                    foreach ($images as $image) {
                         $room->addMedia($image)->toMediaCollection('roomImages');
                 }
                     
@@ -44,7 +43,8 @@ class CreateRoom
             }
             return $room;
         });
-
+        
+        
         return [
             'room' => $room,
             'FilesUploadFailed' => $FilesUploadFailed

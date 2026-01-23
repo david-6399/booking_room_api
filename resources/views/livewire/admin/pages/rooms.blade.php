@@ -1,11 +1,11 @@
-<div >
+<div>
     <div class="flex min-h-screen">
         <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 lg:hidden hidden"></div>
 
         <div class="flex-1 flex flex-col min-w-0">
             <header class="sticky top-0 z-30">
                 <div class="flex items-center justify-end h-16 px-4 sm:px-6 lg:px-8">
-                    
+
                     <div class="flex items-center space-x-4">
                         <button id="open-create-modal"
                             class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2">
@@ -24,8 +24,8 @@
                     <div class="p-4 sm:p-6 border-b border-gray-100">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div class="relative flex-1 max-w-md">
-                                <input type="text" placeholder="Search rooms..."
-                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                <input type="text" placeholder="Search room number or capacity..."
+                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" wire:model.live='searchRoom'>
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,18 +34,30 @@
                             </div>
                             <div class="flex items-center space-x-3">
                                 <select
-                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                    <option>All Types</option>
-                                    <option>Dorm</option>
-                                    <option>Private</option>
-                                    <option>Suite</option>
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='perType'>
+                                    <option value="">All Types</option>
+                                    @foreach ($roomTypes as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
                                 </select>
+
                                 <select
-                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                    <option>All Status</option>
-                                    <option>Available</option>
-                                    <option>Occupied</option>
-                                    <option>Maintenance</option>
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='perStatus'>
+                                    <option value=""> Select Status </option>
+                                    <option value="available">Available</option>
+                                    <option value="occupied">Occupied</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+
+                                <select
+                                    class="px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='perPage'>
+                                    <option value=""> 6 Per Page </option>
+                                    <option value="10">10 Per Page</option>
+                                    <option value="15">15 Per Page</option>
+                                    <option value="20">20 Per Page</option>
                                 </select>
                             </div>
                         </div>
@@ -76,181 +88,60 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1"
-                                                alt="Room" class="w-12 h-9 rounded-lg object-cover">
-                                            <div>
-                                                <p class="font-medium text-gray-900">Room 101</p>
-                                                <p class="text-sm text-gray-500">Ground Floor</p>
+                                @foreach ($rooms as $room)
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1"
+                                                    alt="Room" class="w-12 h-9 rounded-lg object-cover">
+                                                <div>
+                                                    <p class="font-medium text-gray-900">Room {{ $room->room_number }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">Ground Floor</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">4-Bed Dorm</td>
-                                    <td class="px-6 py-4 text-gray-600">4 guests</td>
-                                    <td class="px-6 py-4 text-gray-900 font-medium">$25/night</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Available</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Edit">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Delete">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1"
-                                                alt="Room" class="w-12 h-9 rounded-lg object-cover">
-                                            <div>
-                                                <p class="font-medium text-gray-900">Room 102</p>
-                                                <p class="text-sm text-gray-500">Ground Floor</p>
+                                        </td>
+                                        <td class="px-6 py-4 text-gray-600">{{ $room->roomType->name ?? 'null' }}</td>
+                                        <td class="px-6 py-4 text-gray-600">{{ $room->capacity }} guests</td>
+                                        <td class="px-6 py-4 text-gray-900 font-medium">{{ $room->price_per_night }}
+                                            DA/night</td>
+                                        <td class="px-6 py-4">
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
+                                            {{ detectRoomStatus($room->status) }} ">{{ $room->status }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex items-center justify-end space-x-2">
+                                                <button
+                                                    class=" p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
+                                                    title="Edit" wire:click='openEditRoomPopup({{ $room->id }})'>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                </button>
+                                                <button
+                                                    class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    title="Delete" wire:click='deleteRoom({{ $room->id }})'>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">6-Bed Dorm</td>
-                                    <td class="px-6 py-4 text-gray-600">6 guests</td>
-                                    <td class="px-6 py-4 text-gray-900 font-medium">$20/night</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">Occupied</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Edit">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Delete">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1"
-                                                alt="Room" class="w-12 h-9 rounded-lg object-cover">
-                                            <div>
-                                                <p class="font-medium text-gray-900">Room 201</p>
-                                                <p class="text-sm text-gray-500">First Floor</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Private Room</td>
-                                    <td class="px-6 py-4 text-gray-600">2 guests</td>
-                                    <td class="px-6 py-4 text-gray-900 font-medium">$65/night</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">Maintenance</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Edit">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Delete">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center space-x-3">
-                                            <img src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=80&h=60&dpr=1"
-                                                alt="Room" class="w-12 h-9 rounded-lg object-cover">
-                                            <div>
-                                                <p class="font-medium text-gray-900">Room 202</p>
-                                                <p class="text-sm text-gray-500">First Floor</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-gray-600">Suite</td>
-                                    <td class="px-6 py-4 text-gray-600">3 guests</td>
-                                    <td class="px-6 py-4 text-gray-900 font-medium">$95/night</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Available</span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex items-center justify-end space-x-2">
-                                            <button
-                                                class="edit-room-btn p-2 text-gray-400 hover:text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                                                title="Edit">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </button>
-                                            <button
-                                                class="delete-room-btn p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Delete">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="lg:px-20 lg:py-4">
+                    {{ $rooms->links() }}
                 </div>
             </main>
         </div>
@@ -258,7 +149,8 @@
 
     <!-- Create Room Modal -->
     <div id="create-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
-        aria-labelledby="create-modal-title">
+        aria-labelledby="create-modal-title" wire:ignore.self>
+
         <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
         <div class="fixed inset-0 overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4">
@@ -273,13 +165,19 @@
                             </svg>
                         </button>
                     </div>
-                    <form class="p-6 space-y-5">
+                    <form class="p-6 space-y-5" wire:submit='createRoom()'>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="room-number" class="block text-sm font-medium text-gray-700 mb-2">Room
                                     Number</label>
                                 <input type="text" id="room-number" placeholder="e.g., 101"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent invalid:border-red-500  outline-none @error('room.room_number')
+                                        border-red-500
+                                    @enderror"
+                                    wire:model='room.room_number'>
+                                @error('room.room_number')
+                                    <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
                                 <label for="room-floor"
@@ -296,12 +194,11 @@
                             <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Room
                                 Type</label>
                             <select id="room-type"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                <option>4-Bed Dorm</option>
-                                <option>6-Bed Dorm</option>
-                                <option>8-Bed Dorm</option>
-                                <option>Private Room</option>
-                                <option>Suite</option>
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                wire:model='room.room_type_id'>
+                                @foreach ($roomTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -309,7 +206,8 @@
                                 <label for="room-capacity"
                                     class="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
                                 <input type="number" id="room-capacity" placeholder="4" min="1"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model='room.capacity'>
                             </div>
                             <div>
                                 <label for="room-price"
@@ -317,7 +215,8 @@
                                 <div class="relative">
                                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
                                     <input type="number" id="room-price" placeholder="25" min="0"
-                                        class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                        class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        wire:model='room.price_per_night'>
                                 </div>
                             </div>
                         </div>
@@ -352,14 +251,82 @@
                             <textarea id="room-description" rows="3" placeholder="Brief description of the room..."
                                 class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"></textarea>
                         </div>
+                        {{-- upload images --}}
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">A. Multiple Image Upload (Room Modal)
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-4">Insert into Create/Edit Room modal</p>
+
+                            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Room Images</label>
+
+                                <!-- Upload Area -->
+                                <label for="images" id="dropzone"
+                                    class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary hover:bg-gray-50 transition-all duration-300 cursor-pointer block">
+
+                                    <div class="flex flex-col items-center pointer-events-none">
+                                        <div
+                                            class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14 m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+
+                                        <p class="text-sm text-gray-600 mb-1">
+                                            <span class="text-primary font-medium">Click to upload</span> or drag and
+                                            drop
+                                        </p>
+                                        <p class="text-xs text-gray-400">PNG, JPG up to 10MB (max 5 images)</p>
+                                    </div>
+
+                                    <!-- Hidden Input -->
+                                    <input id="images" type="file" class="hidden" multiple
+                                        wire:model='images'>
+                                </label>
+                                <button disabled class="border border-gray-200 w-full text-gray-700 px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2 opacity-75 cursor-not-allowed" wire:loading wire:target='images'>
+                                    <svg class="animate-spin h-4 w-full text-gray-600" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    <span>Loading ...</span>
+                                </button>
+
+                                <!-- Image Preview Grid -->
+                                <div class="grid grid-cols-5 gap-3 mt-4">
+                                    @if($images)
+                                        @foreach ($images as $index => $image )
+                                            <div class="relative group">
+                                                <img src="{{ $image->temporaryUrl() }}"
+                                                    alt="Preview" class="w-full h-20 object-cover rounded-lg">
+                                                <button wire:click='removeImage({{ $index }})'
+                                                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" >
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
+                            <button
+                                class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+                            <button type="submit"
+                                class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Create
+                                Room</button>
+                        </div>
                     </form>
-                    <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
-                        <button
-                            class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
-                        <button
-                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Create
-                            Room</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -367,8 +334,32 @@
 
     <!-- Edit Room Modal -->
     <div id="edit-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
-        aria-labelledby="edit-modal-title">
+        aria-labelledby="edit-modal-title" wire:ignore.self>
         <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+
+        @if ($errors->any())
+            <div class="fixed top-4 right-4 z-50 space-y-2 max-w-md">
+                @foreach ($errors->all() as $error)
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                        <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-red-800">{{ $error }}</p>
+                        </div>
+                        <button class="text-red-400 hover:text-red-600" onclick="this.closest('.bg-red-50').remove()">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+
         <div class="fixed inset-0 overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4">
                 <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl transform transition-all">
@@ -382,13 +373,14 @@
                             </svg>
                         </button>
                     </div>
-                    <form class="p-6 space-y-5">
+                    <form class="p-6 space-y-5" wire:submit='editRoom'>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="edit-room-number"
                                     class="block text-sm font-medium text-gray-700 mb-2">Room Number</label>
                                 <input type="text" id="edit-room-number" value="101"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model='updateRoom.room_number'>
                             </div>
                             <div>
                                 <label for="edit-room-floor"
@@ -405,12 +397,12 @@
                             <label for="edit-room-type" class="block text-sm font-medium text-gray-700 mb-2">Room
                                 Type</label>
                             <select id="edit-room-type"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                <option selected>4-Bed Dorm</option>
-                                <option>6-Bed Dorm</option>
-                                <option>8-Bed Dorm</option>
-                                <option>Private Room</option>
-                                <option>Suite</option>
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                wire:model='updateRoom.room_type_id'>
+                                <option value=""> ----- </option>
+                                @foreach ($roomTypes as $type)
+                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
@@ -418,7 +410,8 @@
                                 <label for="edit-room-capacity"
                                     class="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
                                 <input type="number" id="edit-room-capacity" value="4" min="1"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model='updateRoom.capacity'>
                             </div>
                             <div>
                                 <label for="edit-room-price"
@@ -426,7 +419,8 @@
                                 <div class="relative">
                                     <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
                                     <input type="number" id="edit-room-price" value="25" min="0"
-                                        class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                        class="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                        wire:model='updateRoom.price_per_night'>
                                 </div>
                             </div>
                         </div>
@@ -434,10 +428,11 @@
                             <label for="edit-room-status"
                                 class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                             <select id="edit-room-status"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                                <option selected>Available</option>
-                                <option>Occupied</option>
-                                <option>Maintenance</option>
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                wire:model='updateRoom.status'>
+                                @foreach (\App\Enums\roomStatus::cases() as $status)
+                                    <option value="{{ $status->value }}">{{ ucfirst($status->value) }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div>
@@ -465,14 +460,14 @@
                                 </label>
                             </div>
                         </div>
+                        <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
+                            <button type="submit"
+                                class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+                            <button
+                                class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Save
+                                Changes</button>
+                        </div>
                     </form>
-                    <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
-                        <button
-                            class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
-                        <button
-                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Save
-                            Changes</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -535,22 +530,32 @@
         const editModal = document.getElementById('edit-modal');
         const deleteModal = document.getElementById('delete-modal');
 
-        function openModal(modal) {
+        function openModal(modal) { // verified
             modal.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
             const firstInput = modal.querySelector('input, select, button');
             if (firstInput) firstInput.focus();
         }
 
-        function closeModal(modal) {
+        function closeModal(modal) { // verified
             modal.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
         }
 
         document.getElementById('open-create-modal').addEventListener('click', () => openModal(createModal));
 
-        document.querySelectorAll('.edit-room-btn').forEach(btn => {
-            btn.addEventListener('click', () => openModal(editModal));
+
+
+        document.addEventListener('openEditRoomModal', () => { // verified 
+            openModal(editModal);
+        });
+
+        document.addEventListener('closeEditRoomModal', () => { // verified 
+            closeModal(editModal);
+        });
+
+        document.addEventListener('closeCreateRoomModal', function(){ // verified 
+            closeModal(editModal);
         });
 
         document.querySelectorAll('.delete-room-btn').forEach(btn => {

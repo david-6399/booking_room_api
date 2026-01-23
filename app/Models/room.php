@@ -44,15 +44,14 @@ class Room extends Model implements HasMedia
 
 
 
-    public function registerMediaCollections(): void
+   public function registerMediaCollections(): void
     {
         $this->addMediaCollection('roomImages');
-    }
+    } 
     
     protected static function booted()  
     {
         static::addGlobalScope(new hostelOwnerScope);
     }
 
-    
 }

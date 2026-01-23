@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Pages;
+namespace App\Livewire\Auth;
 
 use Livewire\Component;
 

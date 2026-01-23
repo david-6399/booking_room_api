@@ -124,7 +124,7 @@
                                 class="absolute top-3 left-3 {{ $room->status->value === 'available' ? 'bg-green-500' : ($room->status->value === 'maintenance' ? 'bg-orange-500' : 'bg-red-500')}} text-white text-xs font-semibold px-2.5 py-1 rounded-full">{{ $room->status }}</span>
                         </div>
                         <div class="p-4">
-                            <h3 class="font-semibold text-gray-900 group-hover:text-primary transition-colors">{{ $room->roomType->name }} Room</h3>
+                            <h3 class="font-semibold text-gray-900 group-hover:text-primary transition-colors">{{ $room->roomType->name ?? 'No Type' }} Room</h3>
                             <div class="flex items-center text-gray-500 text-sm mt-1.5">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

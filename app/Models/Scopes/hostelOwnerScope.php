@@ -14,33 +14,36 @@ class hostelOwnerScope implements Scope
      * Apply the scope to a given Eloquent query builder.
      */
     public function apply(Builder $builder, Model $model): void
-    {
-        // dd(auth()->user()->hostel->id);
-        if (!Auth::check()) {
-            return;
-        }
-
-        $user = auth()->user();
-        if ($user->hasRole(['super_admin']))    {
-            return;
-        }
-
-        if ($user->hasRole('admin') && $model->getTable() !== 'hostels') {
-            
-            $hostel = $user->hostel->id;
-            
-            if (!$hostel) {
-                // If the admin user does not have an associated hostel, restrict all records
-                $builder->whereRaw('1 = 0'); // This will return no results
+    { {
+            // Guests: do not filter
+            if (!Auth::check()) {
                 return;
             }
-            
-            $builder->where($model->getTable() . '.hostel_id', $hostel); 
-        }
 
-        // for Hostels table itself
-        if ($user->hasRole('admin') && $model->getTable() === 'hostels') {
-            $builder->where('created_by', $user->id);
+            $user = Auth::user();
+
+            // Super admin: no filter
+            if ($user->hasRole('super_admin')) {
+                return;
+            }
+
+            // Admin: filter by hostel
+            if ($user->hasRole('admin') && $model->getTable() !== 'hostels') {
+                $hostelId = $user->hostel?->id;
+
+                if (!$hostelId) {
+                    // Admin without a hostel sees nothing
+                    $builder->whereRaw('1 = 0');
+                    return;
+                }
+
+                $builder->where($model->getTable() . '.hostel_id', $hostelId);
+            }
+
+            // Admin filtering for hostels themselves
+            if ($user->hasRole('admin') && $model->getTable() === 'hostels') {
+                $builder->where('created_by', $user->id);
+            }
         }
     }
 }

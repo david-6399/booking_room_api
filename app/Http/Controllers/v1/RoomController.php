@@ -59,8 +59,9 @@ class RoomController extends Controller
      */
     public function store(StoreroomRequest $request)
     {
-        
-        $result = $this->createRoom->execute($request);
+        $data = $request->validated();
+        $images = $request->file('images', []);   
+        $result = $this->createRoom->execute($data, $images);
         
         return response()->json([
             'message' => $result['FilesUploadFailed']
