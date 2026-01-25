@@ -25,7 +25,8 @@
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div class="relative flex-1 max-w-md">
                                 <input type="text" placeholder="Search room number or capacity..."
-                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" wire:model.live='searchRoom'>
+                                    class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                                    wire:model.live='searchRoom'>
                                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -285,7 +286,9 @@
                                     <input id="images" type="file" class="hidden" multiple
                                         wire:model='images'>
                                 </label>
-                                <button disabled class="border border-gray-200 w-full text-gray-700 px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2 opacity-75 cursor-not-allowed" wire:loading wire:target='images'>
+                                <button disabled
+                                    class="border border-gray-200 w-full text-gray-700 px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2 opacity-75 cursor-not-allowed"
+                                    wire:loading wire:target='images'>
                                     <svg class="animate-spin h-4 w-full text-gray-600" fill="none"
                                         viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10"
@@ -299,17 +302,17 @@
 
                                 <!-- Image Preview Grid -->
                                 <div class="grid grid-cols-5 gap-3 mt-4">
-                                    @if($images)
-                                        @foreach ($images as $index => $image )
+                                    @if ($images)
+                                        @foreach ($images as $index => $image)
                                             <div class="relative group">
-                                                <img src="{{ $image->temporaryUrl() }}"
-                                                    alt="Preview" class="w-full h-20 object-cover rounded-lg">
+                                                <img src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                                    class="w-full h-20 object-cover rounded-lg">
                                                 <button wire:click='removeImage({{ $index }})'
-                                                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" >
+                                                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <svg class="w-3 h-3" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                            d="M6 18L18 6M6 6l12 12" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
                                             </div>
@@ -460,6 +463,93 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">A. Multiple Image Upload (Room Modal)
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-4">Insert into Create/Edit Room modal</p>
+
+                            <div class="bg-white p-6 rounded-xl border border-gray-200">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Room Images</label>
+
+                                <!-- Upload Area -->
+                                <label for="images" id="dropzone"
+                                    class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary hover:bg-gray-50 transition-all duration-300 cursor-pointer block">
+
+                                    <div class="flex flex-col items-center pointer-events-none">
+                                        <div
+                                            class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14 m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+
+                                        <p class="text-sm text-gray-600 mb-1">
+                                            <span class="text-primary font-medium">Click to upload</span> or drag and
+                                            drop
+                                        </p>
+                                        <p class="text-xs text-gray-400">PNG, JPG up to 10MB (max 5 images)</p>
+                                    </div>
+
+                                    <!-- Hidden Input -->
+                                    <input id="images" type="file" class="hidden" multiple
+                                        wire:model='images'>
+                                </label>
+                                <button disabled
+                                    class="border border-gray-200 w-full text-gray-700 px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2 opacity-75 cursor-not-allowed"
+                                    wire:loading wire:target='images'>
+                                    <svg class="animate-spin h-4 w-full text-gray-600" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                    <span>Loading ...</span>
+                                </button>
+
+                                <!-- Image Preview Grid -->
+                                <div class="grid grid-cols-5 gap-3 mt-4">
+                                    @if($existingImages)
+                                        @foreach($existingImages as $index => $image)
+                                            <div class="relative group">
+                                                <img src="{{ $image['url'] }}" alt="Preview"
+                                                    class="w-full h-20 object-cover rounded-lg">
+                                                <button wire:click='removeExistingImage({{ $image['id'] }})'
+                                                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                    @if ($images)
+                                        @foreach ($images as $index => $image)
+                                            <div class="relative group">
+                                                <img src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                                    class="w-full h-20 object-cover rounded-lg">
+                                                <button wire:click='removeImage({{ $index }})'
+                                                    class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
                             <button type="submit"
                                 class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
@@ -475,34 +565,40 @@
 
     <!-- Delete Confirmation Modal -->
     <div id="delete-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true"
-        aria-labelledby="delete-modal-title">
-        <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
-        <div class="fixed inset-0 overflow-y-auto">
-            <div class="flex min-h-full items-center justify-center p-4">
-                <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl transform transition-all">
-                    <div class="p-6 text-center">
-                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                        </div>
-                        <h2 id="delete-modal-title" class="text-xl font-bold text-gray-900 mb-2">Delete Room</h2>
-                        <p class="text-gray-500 mb-6">Are you sure you want to delete <span
-                                class="font-medium text-gray-700">Room 101</span>? This action cannot be undone.</p>
-                        <div class="flex items-center justify-center gap-3">
-                            <button
-                                class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
-                            <button
-                                class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Delete
-                                Room</button>
+        aria-labelledby="delete-modal-title" wire:ignore.self>
+        @if ($selectedRoomForDelete)
+            <div class="fixed inset-0 bg-black/50 transition-opacity" aria-hidden="true"></div>
+            <div class="fixed inset-0 overflow-y-auto">
+                <div class="flex min-h-full items-center justify-center p-4">
+                    <div class="relative w-full max-w-md bg-white rounded-2xl shadow-xl transform transition-all">
+                        <div class="p-6 text-center">
+                            <div
+                                class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <h2 id="delete-modal-title" class="text-xl font-bold text-gray-900 mb-2">Delete Room</h2>
+                            <p class="text-gray-500 mb-6">Are you sure you want to delete <span
+                                    class="font-medium text-gray-700">Room
+                                    {{ $selectedRoomForDelete->room_number ?? "No Room" }}</span>? This action cannot be
+                                undone.</p>
+                            <div class="flex items-center justify-center gap-3">
+                                <button
+                                    class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors" onclick="closeModal(deleteModal)">Cancel</button>
+                                <button
+                                    class="bg-red-500 hover:bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium transition-colors" wire:click='confirmeDelete()'>Delete
+                                    Room</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
+
 
     <script>
         const sidebar = document.getElementById('sidebar');
@@ -554,13 +650,22 @@
             closeModal(editModal);
         });
 
-        document.addEventListener('closeCreateRoomModal', function(){ // verified 
+        document.addEventListener('closeCreateRoomModal', function() { // verified 
             closeModal(editModal);
         });
 
-        document.querySelectorAll('.delete-room-btn').forEach(btn => {
-            btn.addEventListener('click', () => openModal(deleteModal));
-        });
+        document.addEventListener('deleteRoomBtn', function() {     // verified 
+            openModal(deleteModal);
+        })
+
+        document.addEventListener('closeDeleteModal',function(){
+            closeModal(deleteModal);
+            @this.call('resetAfterClosingModal');
+        })
+
+        // document.querySelectorAll('.delete-room-btn').forEach(btn => {
+        //     btn.addEventListener('click', () => openModal(deleteModal));
+        // });
 
         document.querySelectorAll('.close-modal').forEach(btn => {
             btn.addEventListener('click', (e) => {

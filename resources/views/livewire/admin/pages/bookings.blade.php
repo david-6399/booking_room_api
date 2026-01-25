@@ -269,13 +269,13 @@
                         <div class="mb-6">
                             <p class="text-sm text-gray-500 mb-1">Current Status</p>
                             <span
-                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Confirmed</span>
+                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ detectBookingStatus(optional($bookingInfo)->status) }}">{{ optional($bookingInfo)->status }}</span>
                         </div>
                         <div>
                             <label for="new-status" class="block text-sm font-medium text-gray-700 mb-2">New
                                 Status</label>
                             <select id="new-status"
-                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none" wire:model='bookingStatus'>
                                 <option value="pending">Pending</option>
                                 <option value="confirmed">Confirmed</option>
                                 <option value="checked_in">Checked In</option>
@@ -292,9 +292,9 @@
                     </div>
                     <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100">
                         <button
-                            class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors">Cancel</button>
+                            class="close-modal px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors" onclick="closeModal(statusModal)">Cancel</button>
                         <button
-                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors">Update
+                            class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-medium transition-colors" wire:click='updateStatus()'>Update
                             Status</button>
                     </div>
                 </div>
@@ -463,7 +463,6 @@
 
         function closeModal(modal) {
             modal.classList.add('hidden');
-
             @this.call('resetAfterClosingModal')
         }
 

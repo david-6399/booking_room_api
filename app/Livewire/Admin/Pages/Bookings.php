@@ -14,6 +14,8 @@ class Bookings extends Component
 
     public $bookingInfo = [];
 
+    public $bookingStatus = '';
+
     public $nightCount = 0 ;
 
     public $roomPrice = 0 ;
@@ -26,9 +28,9 @@ class Bookings extends Component
 
     public $perStatus = '' ;
 
-    public  $perDateStart = "" ;
+    public $perDateStart = "" ;
 
-    public  $perDateEnd = "";
+    public $perDateEnd = "";
 
 
 
@@ -47,11 +49,19 @@ class Bookings extends Component
 
     public function resetAfterClosingModal(){
         $this->bookingInfo = [];
+        $this->bookingStatus = '';
     }
 
     public function changeStatus($id){
-        $this->dispatch('openChangeStatusModal');
         $this->bookingInfo = booking::find($id);
+        $this->bookingStatus = $this->bookingInfo['status'];
+        $this->dispatch('openChangeStatusModal');
+    }
+
+    public function updateStatus(){
+        booking::find($this->bookingInfo['id'])->update([
+            'status' => $this->bookingStatus
+        ]);
     }
 
     public function printBookingDetails(){

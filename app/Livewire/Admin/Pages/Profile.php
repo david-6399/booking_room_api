@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Pages;
 
 use App\Models\Hostel;
+use App\Services\Basics\UploadImages;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -11,6 +12,7 @@ use Livewire\WithFileUploads;
 class Profile extends Component 
 {
     use WithFileUploads;
+
 
     public $adminInfo ;
 
@@ -52,16 +54,16 @@ class Profile extends Component
     
     }
 
-    public function saveCoverImage(){
-        
+    public function saveCoverImage(UploadImages $uploader){
+
+        $this->validate([
+            'coverImage' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
         if($this->coverImage){
-            $this->hostel->clearMediaCollection('hostelCover');
-            $this->hostel
-            ->addMedia($this->coverImage->getRealPath())
-            ->usingFileName($this->coverImage->getClientOriginalName())
-            ->toMediaCollection('hostelCover');
+            $uploader->upload($this->coverImage, $this->hostel,'hostelCover', true);
             $this->reset('coverImage');
-        }else{
+        }else{  
             return ;
         }
 

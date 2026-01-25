@@ -33,7 +33,6 @@
                 "psr-4": {
                     "Brick\\Math\\": "src/"
                 }
-                
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [

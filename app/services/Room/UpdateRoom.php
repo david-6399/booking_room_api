@@ -5,6 +5,7 @@ namespace App\Services\Room;
 use App\Http\Requests\UpdateroomRequest;
 use App\Http\Resources\roomResource;
 use App\Models\Room;
+use App\Services\Basics\UploadImages;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -13,7 +14,7 @@ class UpdateRoom
     /**
      * Create a new class instance.
      */
-    public function __construct()
+    public function __construct(protected UploadImages $uploader)
     {
         //
     }
@@ -27,9 +28,10 @@ class UpdateRoom
         $room->update($data);   
         if (!empty($images)) {
             try {
-                foreach ($images as $image) {
-                    $room->addMedia($image)->toMediaCollection('roomImages');
-                }
+                $this->uploader->upload($images, $room, 'roomImages');
+                // foreach ($images as $image) {
+                //     $room->addMedia($image)->toMediaCollection('roomImages');
+                // }
             } catch (\Exception $e) {
                 $FilesUploadFailed = true;
                 Log::error('Image upload failed for room ID ', [
