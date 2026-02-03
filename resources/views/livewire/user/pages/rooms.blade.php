@@ -16,21 +16,24 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Filters -->
             <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-4 md:p-6 mb-8">
-                <div class="flex flex-col md:flex-row md:items-end gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 md:items-end gap-4">
+
                     <!-- Price Range -->
                     <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
                         <div class="flex items-center gap-3">
                             <div class="relative flex-1">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                                <span class="absolute text-xs left-3 top-1/2 -translate-y-1/2 text-gray-400">DA</span>
                                 <input type="number" id="min-price" placeholder="Min"
-                                    class="w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" wire:model.live="minPrice">
+                                    class="w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    wire:model.live="minPrice">
                             </div>
                             <span class="text-gray-400">-</span>
                             <div class="relative flex-1">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">$</span>
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">DA</span>
                                 <input type="number" id="max-price" placeholder="Max"
-                                    class="w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" wire:model.live="maxPrice">
+                                    class="w-full pl-8 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                    wire:model.live="maxPrice">
                             </div>
                         </div>
                     </div>
@@ -56,7 +59,8 @@
 
                     <!-- Room Type -->
                     <div class="flex-1">
-                        <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Room Type</label>
+                        <label for="room-type" class="block text-sm font-medium text-gray-700 mb-2">Room
+                            Type</label>
                         <div class="relative">
                             <select id="room-type"
                                 class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all appearance-none bg-white cursor-pointer">
@@ -73,6 +77,7 @@
                         </div>
                     </div>
 
+
                     <!-- Filter Button -->
                     <button id="filter-btn"
                         class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2">
@@ -82,6 +87,8 @@
                         </svg>
                         <span>Apply Filters</span>
                     </button>
+
+
                 </div>
             </div>
 
@@ -90,41 +97,43 @@
                 <p class="text-gray-600"><span class="font-semibold text-gray-900">{{ count($rooms) }}</span> rooms
                     available</p>
                 <div class="flex items-center gap-6">
-                  <div class="flex items-center gap-2">
-                      <span class="text-sm text-gray-500">Sort by:</span>
-                      <select
-                          class="text-sm font-medium text-gray-700 bg-transparent border-0 focus:ring-0 cursor-pointer">
-                          <option>Price: Low to High</option>
-                          <option>Price: High to Low</option>
-                          <option>Most Popular</option>
-                      </select>
-                  </div>
-                  <div class="flex items-center gap-2">
-                      <span class="text-sm text-gray-500">Show Per Page:</span>
-                      <select class="text-sm font-medium text-gray-700 bg-transparent border-0 focus:ring-0 cursor-pointer" wire:model.live="perPage">
-                          <option value='8'>8 Per Page</option>
-                          <option value='16'>16 Per Page</option>
-                          <option value='25'>25 Per Page</option>
-                      </select>
-                  </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Sort by:</span>
+                        <select
+                            class="text-sm font-medium text-gray-700 bg-transparent border-0 focus:ring-0 cursor-pointer">
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Most Popular</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Show Per Page:</span>
+                        <select
+                            class="text-sm font-medium text-gray-700 bg-transparent border-0 focus:ring-0 cursor-pointer"
+                            wire:model.live="perPage">
+                            <option value='8'>8 Per Page</option>
+                            <option value='16'>16 Per Page</option>
+                            <option value='25'>25 Per Page</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
             <!-- Room Grid -->
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach ($rooms as $room)
-                    <div class="group bg-white rounded-2xl shadow-md hover:shadow-xl cursor-pointer
- transition-shadow overflow-hidden border border-gray-100"
+                    <div class="group bg-white rounded-2xl shadow-md hover:shadow-xl cursor-pointer transition-shadow overflow-hidden border border-gray-100"
                         wire:key="{{ $room->id }}" wire:click='openRoom({{ $room->id }})'>
                         <div class="relative h-44 overflow-hidden">
                             <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=800"
                                 alt="Standard Dorm Room"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             <span
-                                class="absolute top-3 left-3 {{ $room->status->value === 'available' ? 'bg-green-500' : ($room->status->value === 'maintenance' ? 'bg-orange-500' : 'bg-red-500')}} text-white text-xs font-semibold px-2.5 py-1 rounded-full">{{ $room->status }}</span>
+                                class="absolute top-3 left-3 {{ $room->status->value === 'available' ? 'bg-green-500' : ($room->status->value === 'maintenance' ? 'bg-orange-500' : 'bg-red-500') }} text-white text-xs font-semibold px-2.5 py-1 rounded-full">{{ $room->status }}</span>
                         </div>
                         <div class="p-4">
-                            <h3 class="font-semibold text-gray-900 group-hover:text-primary transition-colors">{{ $room->roomType->name ?? 'No Type' }} Room</h3>
+                            <h3 class="font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                                {{ $room->roomType->name ?? 'No Type' }} Room</h3>
                             <div class="flex items-center text-gray-500 text-sm mt-1.5">
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

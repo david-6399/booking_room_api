@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('slug')->unique()->nullable();
             $table->string('location');
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->enum('status',['active','inactive','pending'])->default('pending');
             $table->string('phone')->nullable()->nullable();
             $table->string('email')->nullable()->nullable();
             $table->timestamps();

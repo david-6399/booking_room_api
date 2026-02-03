@@ -41,8 +41,10 @@ class HostelController extends Controller
      */
     public function store(StorehostelRequest $request)
     {
+        $data = $request->validated();
+        $images = $request->file('images',[]);
         
-        $result = $this->createHostel->execute($request);
+        $result = $this->createHostel->execute($data,$images);
 
         return response()->json([
             'message'=> $result['FilesUploadFailed']

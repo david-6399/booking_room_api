@@ -8,9 +8,11 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class RoomsDetails extends Component
 {
+    use WithFileUploads;
     public Room $selectedRoom;
 
     public $bookingData = ['check_in_date'=> ''];   
@@ -21,9 +23,13 @@ class RoomsDetails extends Component
 
     public $price = 0;
 
+    public $getRoomImages ;
+
     public function mount(Room $id)
     {
         $this->selectedRoom = $id;
+
+        $this->getRoomImages = $this->selectedRoom->getMedia('roomImages');
 
         if (session()->has('booking_data')) {
             $data = session('booking_data');
@@ -34,6 +40,12 @@ class RoomsDetails extends Component
             $this->nightsCount = $data['nights_count'];
             $this->totalPrice = $data['total_amount'];
             $this->price = $data['price_per_night'];
+        }
+
+        if(session()->has('checksBookingDate')){
+            $data = session('checksBookingDate');
+            $this->bookingData['check_in_date'] = $data['check_in_date'];
+            $this->bookingData['check_out_date'] = $data['check_out_date'];
         }
     }
 

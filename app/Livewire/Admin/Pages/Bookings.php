@@ -98,7 +98,7 @@ class Bookings extends Component
 
         return view('livewire.admin.pages.Bookings',[
             'bookings' => $bookings,
-            'bookingNb' => $bookingNb,
+            'bookingNb' => $bookingNb,  
             'confirmedNb' => $confirmedNb,
             'cancelledNb' => $cancelledNb,
             'pendingNb' => $pendingNb,

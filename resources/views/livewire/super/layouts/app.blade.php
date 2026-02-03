@@ -25,7 +25,7 @@
 <body class="bg-gray-50 text-gray-800 font-sans">
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        @include('livewire.admin.partials.sidebar')
+        @include('livewire.super.partials.sidebar')
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64">
             <!-- Top Bar -->
@@ -56,12 +56,6 @@
             {{ $slot }}
         </div>
     </div>
-    
-    @if (session('toast'))
-        <script>
-            toast("{{ session('toast.message') }}", "{{ session('toast.type') }}");
-        </script>
-    @endif
 
     <script>
         const sidebar = document.getElementById('sidebar');
@@ -79,7 +73,6 @@
             }
         }
 
-
         openSidebar.addEventListener('click', () => toggleSidebar(true));
         closeSidebar.addEventListener('click', () => toggleSidebar(false));
         sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
@@ -96,7 +89,13 @@
                 userMenu.classList.add('hidden');
             }
         });
+    
+
+
+
+
     </script>
+
     @livewireScripts
 </body>
 

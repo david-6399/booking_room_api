@@ -62,7 +62,7 @@ class Profile extends Component
 
         if($this->coverImage){
             $uploader->upload($this->coverImage, $this->hostel,'hostelCover', true);
-            $this->reset('coverImage');
+            $this->reset('coverImage'); 
         }else{  
             return ;
         }

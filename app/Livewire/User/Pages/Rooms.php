@@ -12,6 +12,14 @@ class Rooms extends Component
 
     public $perPage = 8;
 
+    public $minPrice = 0;
+
+    public $maxPrice = 0;
+
+    public $check_in = '';
+
+    public $check_out = '';
+
     public function openRoom(int $id)
     {
         $room = Room::findOrFail($id);
@@ -24,7 +32,17 @@ class Rooms extends Component
 
     public function render()
     {
-        $rooms = Room::latest()->paginate($this->perPage);
+        $query = Room::query();
+
+        if (!empty($this->minPrice)) {
+            $query->where('price_per_night', '>', $this->minPrice);
+        }
+
+        if (!empty($this->maxPrice)) {
+            $query->where('price_per_night', '<', $this->maxPrice);
+        }
+
+        $rooms = $query->latest()->paginate($this->perPage);
 
         return view('livewire.user.pages.rooms', [
             'rooms' => $rooms,

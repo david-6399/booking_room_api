@@ -17,6 +17,7 @@
         </div>
     </div>
 
+
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="lg:grid lg:grid-cols-3 lg:gap-8">
@@ -27,7 +28,7 @@
                     <!-- Main Image -->
                     <div class="relative rounded-2xl overflow-hidden h-64 sm:h-80 md:h-96">
                         <img id="main-image"
-                            src="https://images.pexels.com/photos/1743231/pexels-photo-1743231.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                            src="{{ $getRoomImages->first()->getUrl() }}"
                             alt="Private Double Room" class="w-full h-full object-cover">
                         <span
                             class="absolute top-4 left-4 {{ $selectedRoom->status->value === 'available' ? 'bg-green-500' : ($selectedRoom->status->value === 'maintenance' ? 'bg-orange-500' : 'bg-red-500') }} text-white text-sm font-semibold px-4 py-1.5 rounded-full">{{ $selectedRoom->status }}</span>
@@ -35,29 +36,14 @@
 
                     <!-- Thumbnail Gallery -->
                     <div class="grid grid-cols-4 gap-3">
+                        @foreach($getRoomImages as $image)
+                            
                         <button class="thumbnail-btn rounded-xl overflow-hidden h-20 sm:h-24 border-2 border-primary"
-                            data-image="https://images.pexels.com/photos/1743231/pexels-photo-1743231.jpeg?auto=compress&cs=tinysrgb&w=1200">
-                            <img src="https://images.pexels.com/photos/1743231/pexels-photo-1743231.jpeg?auto=compress&cs=tinysrgb&w=400"
+                            data-image="{{ $image->getUrl() }}">
+                            <img src="{{ $image->getUrl() }}"
                                 alt="Room view 1" class="w-full h-full object-cover">
                         </button>
-                        <button
-                            class="thumbnail-btn rounded-xl overflow-hidden h-20 sm:h-24 border-2 border-transparent hover:border-primary transition-colors"
-                            data-image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1200">
-                            <img src="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=400"
-                                alt="Room view 2" class="w-full h-full object-cover">
-                        </button>
-                        <button
-                            class="thumbnail-btn rounded-xl overflow-hidden h-20 sm:h-24 border-2 border-transparent hover:border-primary transition-colors"
-                            data-image="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1200">
-                            <img src="https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=400"
-                                alt="Room view 3" class="w-full h-full object-cover">
-                        </button>
-                        <button
-                            class="thumbnail-btn rounded-xl overflow-hidden h-20 sm:h-24 border-2 border-transparent hover:border-primary transition-colors"
-                            data-image="https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=1200">
-                            <img src="https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?auto=compress&cs=tinysrgb&w=400"
-                                alt="Room view 4" class="w-full h-full object-cover">
-                        </button>
+                        @endforeach
                     </div>
                 </div>
 

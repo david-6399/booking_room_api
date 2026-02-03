@@ -20,7 +20,7 @@
                 <a href="/reister" class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
                     My Profile
                 </a>
-                <a href="{{ route('admin.home', $current) }}" class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
+                <a href="{{ route('admin.dashboard', $current) }}" class="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-medium transition-colors">
                     Dashboard
                 </a>
                 <a href="{{ route('logout') }}" class="text-primary font-medium">Log Out</a>

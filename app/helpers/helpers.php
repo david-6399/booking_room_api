@@ -4,6 +4,7 @@
 
 use App\Enums\roomStatus;
 use App\Enums\bookingStatus;
+use Illuminate\Support\Facades\Route;
 
 function detectRoomStatus($roomStatus)
 {
@@ -59,4 +60,15 @@ function getInitials($text)
     }
     
     return $initials;
+}
+
+function activeRoute($route){
+    $getRoute = Route::currentRouteName();
+    $result = str_contains($getRoute,$route);
+
+    if($result){
+        return 'bg-primary text-white';
+    }else{
+        return 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors';
+    }
 }

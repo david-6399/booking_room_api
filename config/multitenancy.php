@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Hostel;
-use App\services\FindeTenantByPath;
+use App\Services\FindeTenantByPath;
 use Spatie\Multitenancy\Jobs\TenantAware;
 use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Events\CallQueuedListener;

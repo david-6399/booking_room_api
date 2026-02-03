@@ -5,6 +5,10 @@ use App\Livewire\Admin\Pages\Dashboard;
 use App\Livewire\Admin\Pages\Profile;
 use App\Livewire\Admin\Pages\Rooms;
 use App\Livewire\Admin\Pages\Setting;
+use App\Livewire\Super\Pages\Bookings as PagesBookings;
+use App\Livewire\Super\Pages\Hostels;
+use App\Livewire\Super\Pages\Main;
+use App\Livewire\Super\Pages\Users;
 use App\Livewire\User\Pages\Confirmation;
 use App\Livewire\User\Pages\Dashboard\Booking as DashboardBooking;
 use App\Livewire\User\Pages\Dashboard\Dashboard as PagesDashboard;
@@ -15,6 +19,7 @@ use App\Livewire\User\Pages\Rooms as PagesRooms;
 use App\Livewire\User\Pages\RoomsDetails;
 use App\Models\Booking;
 use App\Models\Hostel;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +33,7 @@ require __DIR__ . '/auth.php';
 
 
 
-route::get('/', Home::class)->name('user.home');     // no multi tenant
+route::get('/', \App\Livewire\User\Pages\Home::class)->name('user.home');     // no multi tenant
 
 route::get('/rooms', PagesRooms::class)->name('user.rooms'); // no multi tenant
 
@@ -44,11 +49,14 @@ route::prefix('guest/{$id}')->group(function(){
 
 
 // super admin dashboard routes
-route::prefix('super')->group(function(){
-    route::get('/', function(){return 'super admin side not ready ';})->name('super.dashboard.home');
-    route::get('/booking', function(){return 'super admin side not ready ';})->name('super.dashboard.booking');
-    route::get('/room', function(){return 'super admin side not ready ';})->name('super.dashboard.room');
-    route::get('/profil', function(){return 'super admin side not ready ';})->name('super.dashboard.profil');
+route::prefix('super')->middleware('auth')->group(function(){
+    route::get('/', Main::class)->name('super.dashboard.home');
+    route::get('/booking', PagesBookings::class)->name('super.dashboard.bookings');
+    route::get('/hostels', Hostels::class)->name('super.dashboard.hostels');
+    route::get('/users', Users::class)->name('super.dashboard.users');
+    route::get('/room', function(){return 'super admin side not ready ';})->name('super.dashboard.rooms');
+    route::get('/profil', function(){return 'super admin side not ready ';})->name('super.dashboard.profile');
+    route::get('/setting', function(){return 'super admin side not ready ';})->name('super.dashboard.setting');
 
 });
 
