@@ -6,7 +6,7 @@
                 <div class="text-center lg:text-left">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                         Find Your Perfect
-                        <span class="text-primary">Stay</span>
+                        <span class="text-primary">Stay NOW</span>
                     </h1>
                     <p class="mt-6 text-lg text-gray-600 max-w-lg mx-auto lg:mx-0">
                         Discover comfortable and affordable hostel rooms. Book your stay in seconds and enjoy a
